@@ -1,0 +1,41 @@
+{
+  "@@locale": "en",
+  "@@context": "Bhanu Municipality App",
+  
+  "serviceTable": "Ward Service Table",
+  "idNo": "ID No",
+  "serviceType": "Service Type",
+  "serviceRequirement": "Service Requirement",
+  "price": "Price",
+  "time": "Time",
+  "serviceBranch": "Service Branch",
+  "commentSection": "Comment Section",
+  "municipalityName": "Bhanu Municipality",
+  "municipalOffice": "Municipal Executive Office",
+  "location": "Tanahun",
+  "citizenCharter": "Citizen Charter",
+  "searchServices": "Search Services by ID",
+  "printInstructions": "Print and enter number",
+  "numberHint": "Number",
+  "invalidId": "Invalid ID",
+  "searchHint": "Search...",
+  "newsLabel": "News24Nepal:",
+  "newsTicker": "Latest Updates...",
+  "homeLabel": "Home",
+  "teamLabel": "Team",
+  "contactLabel": "Contact",
+  "days": "days",
+  "notAvailable": "N/A",
+  "noDataAvailable": "No data available",
+  "refreshData": "Refresh Data",
+  
+  "@searchServices": {
+    "description": "Title for services search section"
+  },
+  "@printInstructions": {
+    "description": "Instructions for printing and entering number"
+  },
+  "@noDataAvailable": {
+    "description": "Message shown when no data is available"
+  }
+}

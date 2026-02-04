@@ -1,0 +1,41 @@
+{
+  "@@locale": "ne",
+  "@@context": "Bhanu Nagarpalika App",
+  
+  "serviceTable": "वडा सेवा तालिका",
+  "idNo": "क्र.सं.",
+  "serviceType": "सेवाको किसिम",
+  "serviceRequirement": "सेवा प्राप्त गर्न पेश गर्नुपर्ने बिबरण",
+  "price": "लाग्‍ने शुल्क",
+  "time": "लाग्‍ने समय",
+  "serviceBranch": "सेवा दिने शाखा",
+  "commentSection": "गुनासो सुन्‍ने अधिकारी",
+  "municipalityName": "भानु नगरपालिका",
+  "municipalOffice": "नगर कार्यपालिकाको कार्यालय",
+  "location": "तनहुँ",
+  "citizenCharter": "नागरिक बडापत्र",
+  "searchServices": "सेवाहरू खोज्न क्रमाङ्क",
+  "printInstructions": "प्रिन्टआउट र नम्बर ठाउँ गर्नुहोस्",
+  "numberHint": "नम्बर",
+  "invalidId": "अमान्य आईडी",
+  "searchHint": "खोज्नुहोस्...",
+  "newsLabel": "समाचार:",
+  "newsTicker": "नयाँ अपडेटहरू...",
+  "homeLabel": "गृह",
+  "teamLabel": "टोली",
+  "contactLabel": "सम्पर्क",
+  "days": "दिन",
+  "notAvailable": "उपलब्ध छैन",
+  "noDataAvailable": "डाटा उपलब्ध छैन",
+  "refreshData": "डाटा ताजा पार्नुहोस्",
+
+  "@searchServices": {
+    "description": "सेवा खोज्ने अनुभागको शीर्षक"
+  },
+  "@printInstructions": {
+    "description": "प्रिन्ट गर्ने र नम्बर राख्ने निर्देशन"
+  },
+  "@noDataAvailable": {
+    "description": "डाटा नभएको खण्डमा देखाइने सन्देश"
+  }
+}
