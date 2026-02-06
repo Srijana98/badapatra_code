@@ -28,6 +28,7 @@ class PusherService {
             debugPrint('✅ ✅ ✅ PUSHER IS NOW CONNECTED ✅ ✅ ✅');
             debugPrint('📡 OrgId: $orgId');
             
+            // ✅ Check status when connected
             _printStatus();
           } else if (currentState == 'DISCONNECTED') {
             _isConnected = false;
@@ -46,30 +47,15 @@ class PusherService {
 
       debugPrint('🔧 Subscribing to channels for orgId: $orgId');
   
-      // ✅ Subscribe to Emergency Broadcast Channel
+   
       try {
         await _pusher.subscribe(
           channelName: 'emergency-broadcast-channel.$orgId',
-          onEvent: (event) {
-            debugPrint('📡 ========== PUSHER EVENT RECEIVED ==========');
-            debugPrint('📡 Channel: emergency-broadcast-channel.$orgId');
-            debugPrint('📡 Event Name: ${event.eventName}');
-            debugPrint('📡 Event Data Type: ${event.data.runtimeType}');
-            debugPrint('📡 Event Data: ${event.data}');
-            
-            if (event.eventName.startsWith('pusher:')) {
-              debugPrint('ℹ️ Pusher system event (ignored): ${event.eventName}');
-              return;
-            }
-            
+          onEvent: (event) {  
             if (event.eventName == 'emergency-broadcast') {
-              debugPrint('✅ ✅ ✅ Emergency broadcast event received! ✅ ✅ ✅');
-              debugPrint('📦 Calling onEmergencyBroadcast callback...');
+              debugPrint('📡 Emergency broadcast received for org: $orgId');
+              debugPrint('📦 Event data: ${event.data}');
               onEmergencyBroadcast(event.data);
-            } else {
-              debugPrint('⚠️ Unknown event received: ${event.eventName}');
-              debugPrint('⚠️ Expected: emergency-broadcast');
-              debugPrint('⚠️ This event will be ignored');
             }
           },
         );
@@ -80,30 +66,15 @@ class PusherService {
         debugPrint('❌ Emergency channel subscription error: $e');
       }
 
-      // ✅ Subscribe to Restart Signage Channel
+   
       try {
         await _pusher.subscribe(
           channelName: 'restart-signage-channel.$orgId',
-          onEvent: (event) {
-            debugPrint('📡 ========== PUSHER EVENT RECEIVED ==========');
-            debugPrint('📡 Channel: restart-signage-channel.$orgId');
-            debugPrint('📡 Event Name: ${event.eventName}');
-            debugPrint('📡 Event Data Type: ${event.data.runtimeType}');
-            debugPrint('📡 Event Data: ${event.data}');
-            
-            if (event.eventName.startsWith('pusher:')) {
-              debugPrint('ℹ️ Pusher system event (ignored): ${event.eventName}');
-              return;
-            }
-            
+          onEvent: (event) {  
             if (event.eventName == 'restart-signage') {
-              debugPrint('✅ ✅ ✅ Restart signage event received! ✅ ✅ ✅');
-              debugPrint('📦 Calling onRestartSignage callback...');
+              debugPrint('🔄 Restart signage received for org: $orgId');
+              debugPrint('📦 Event data: ${event.data}');
               onRestartSignage(event.data);
-            } else {
-              debugPrint('⚠️ Unknown event received: ${event.eventName}');
-              debugPrint('⚠️ Expected: restart-signage');
-              debugPrint('⚠️ This event will be ignored');
             }
           },
         );
@@ -118,10 +89,12 @@ class PusherService {
       await _pusher.connect();
       debugPrint('✅ Pusher connect() called successfully for orgId: $orgId');
       
+      // ✅ Check status after longer delay (5 seconds)
       Future.delayed(const Duration(seconds: 5), () {
         _printStatus();
       });
       
+      // ✅ Also check again after 10 seconds
       Future.delayed(const Duration(seconds: 10), () {
         debugPrint('🔍 ========== FINAL STATUS CHECK (10s) ==========');
         _printStatus();
@@ -135,13 +108,16 @@ class PusherService {
     }
   }
 
+  // ✅ Helper method to print status
   static void _printStatus() {
     debugPrint('🔍 ========== STATUS CHECK ==========');
     debugPrint('🔍 Connection: ${_isConnected ? "CONNECTED ✅" : "NOT CONNECTED ❌"}');
     debugPrint('🔍 Emergency Channel: ${_emergencyChannelSubscribed ? "SUBSCRIBED ✅" : "NOT SUBSCRIBED ❌"}');
     debugPrint('🔍 Restart Channel: ${_restartChannelSubscribed ? "SUBSCRIBED ✅" : "NOT SUBSCRIBED ❌"}');
+    debugPrint('🔍 ===================================');
   }
 
+  // ✅ Getters
   static bool get isConnected => _isConnected;
   static bool get isEmergencyChannelSubscribed => _emergencyChannelSubscribed;
   static bool get isRestartChannelSubscribed => _restartChannelSubscribed;

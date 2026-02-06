@@ -89,6 +89,8 @@ class _LoginPageState extends State<LoginPage> {
 
         final orgCode =
             jsonResponse["organization_info"]?["org_code"]?.toString() ?? '';
+            final orgId = jsonResponse["user_info"]?["orgid"]?.toString() ?? '';
+
        final badapatradata = jsonResponse["badapatradata"] ?? [];
         final teams = jsonResponse["teams"] ?? [];
         final token = jsonResponse["token"]?.toString() ?? '';
@@ -98,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
         print("📊 Display Heading Data: $displayHeadingData");
 
 
-        final orgId = orgCode;
+       // final orgId = orgCode;
 
     
         print("🔍 Extracted userId: '$userId'");

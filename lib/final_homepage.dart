@@ -17,6 +17,7 @@ import 'services/pusher_service.dart';
 import 'brodcast_page.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'youtube_page.dart';
+import 'html_broadcast_page.dart';
 
 
 class FinalHomePage extends StatefulWidget {
@@ -72,50 +73,62 @@ class _FinalHomePageState extends State<FinalHomePage> {
 
   bool _isBroadcastOpen = false;
 
-  
-
 
 @override
-  void initState() {
-    super.initState();
+void initState() {
+  super.initState();
 
-    orgInfo = widget.loginData['organization_info'] ?? {};
-    rssItems = widget.loginData['rss_items'] ?? [];
-    _teams = List<Map<String, dynamic>>.from(
-      widget.teams.map((team) => team as Map<String, dynamic>)
-    );
-    _badapatradata = List.from(widget.badapatradata); 
-    _notices = widget.loginData['notices'] ?? [];
-    _galleryItems = List.from(widget.gallery);  
-    
-    // ✅ FIXED: Proper handling with default fallback
-    print("🔍 Loading display heading configuration...");
-    if (widget.displayHeading != null && widget.displayHeading!.isNotEmpty) {
-      try {
-        displayHeading = BadapatraDisplayHeading.fromJson(widget.displayHeading!);
-        print("✅ Display heading loaded successfully!");
-        print("   - SN visible: ${displayHeading!.sn.isVisible}, width: ${displayHeading!.sn.width}");
-        print("   - Service Type visible: ${displayHeading!.serviceTypename.isVisible}, width: ${displayHeading!.serviceTypename.width}");
-      } catch (e) {
-        print("❌ Error parsing display heading: $e");
-        print("⚠️ Using default configuration");
-        displayHeading = _getDefaultDisplayHeading();
-      }
-    } else {
-      print("⚠️ No display heading provided, using default configuration");
+  orgInfo = widget.loginData['organization_info'] ?? {};
+  rssItems = widget.loginData['rss_items'] ?? [];
+  _teams = List<Map<String, dynamic>>.from(
+    widget.teams.map((team) => team as Map<String, dynamic>)
+  );
+  _badapatradata = List.from(widget.badapatradata); 
+  _notices = widget.loginData['notices'] ?? [];
+  _galleryItems = List.from(widget.gallery);  
+  
+  // Display heading configuration
+  print("🔍 Loading display heading configuration...");
+  if (widget.displayHeading != null && widget.displayHeading!.isNotEmpty) {
+    try {
+      displayHeading = BadapatraDisplayHeading.fromJson(widget.displayHeading!);
+      print("✅ Display heading loaded successfully!");
+      print("   - SN visible: ${displayHeading!.sn.isVisible}, width: ${displayHeading!.sn.width}");
+      print("   - Service Type visible: ${displayHeading!.serviceTypename.isVisible}, width: ${displayHeading!.serviceTypename.width}");
+    } catch (e) {
+      print("❌ Error parsing display heading: $e");
+      print("⚠️ Using default configuration");
       displayHeading = _getDefaultDisplayHeading();
     }
-
-    fetchOrganizationInfo();
-
-    // Initialize Pusher with event callbacks
-    PusherService.init(
-      apiKey: 'f5e0f21674d914753049', 
-      cluster: 'ap2',
-      onEmergencyBroadcast: _handleBroadcastEvent,
-      onRestartSignage: (_) => _restartApp(),
-    );
+  } else {
+    print("⚠️ No display heading provided, using default configuration");
+    displayHeading = _getDefaultDisplayHeading();
   }
+
+  fetchOrganizationInfo();
+
+  // ✅ UPDATED: Initialize Pusher with orgId from user_info
+  final pusherArray = widget.loginData['pusher_array'];
+  if (pusherArray != null) {
+    final apiKey = pusherArray['pusher_app_key'];
+    final cluster = pusherArray['cluster'];
+    
+    if (apiKey != null && cluster != null) {
+      print("🔍 Initializing Pusher for orgId: ${widget.orgid}");
+      PusherService.init(
+        apiKey: apiKey,
+        cluster: cluster,
+        orgId: widget.orgid, 
+       onEmergencyBroadcast: _handleBroadcastEvent,
+        onRestartSignage: (_) => _restartApp(),
+      );
+    } else {
+      print("⚠️ Pusher credentials missing");
+    }
+  } else {
+    print("⚠️ No pusher_array found in login data");
+  }
+}
 
 
 
@@ -139,6 +152,7 @@ BadapatraDisplayHeading _getDefaultDisplayHeading() {
           'userid': widget.userid,
           'orgid': widget.orgid,
           'org_code': widget.orgCode,
+
         },
       );
 
@@ -191,52 +205,183 @@ BadapatraDisplayHeading _getDefaultDisplayHeading() {
     }
   }
 
-  void _handleBroadcastEvent(dynamic data) {
-    if (_isBroadcastOpen || !mounted) return;
-    _isBroadcastOpen = true;
 
-    try {
-      Map<String, dynamic> parsed;
-      if (data is String) {
-        if (data.startsWith('{')) {
-          parsed = Map<String, dynamic>.from(jsonDecode(data));
-        } else {
-          parsed = {"url": data, "type": "video", "duration": 60};
-        }
+
+//   void _handleBroadcastEvent(dynamic data) {
+//   print("🎯 ========== BROADCAST EVENT RECEIVED ==========");
+//   print("🎯 Raw data type: ${data.runtimeType}");
+//   print("🎯 Raw data: $data");
+//   print("🎯 _isBroadcastOpen: $_isBroadcastOpen");
+//   print("🎯 mounted: $mounted");
+  
+//   if (_isBroadcastOpen || !mounted) {
+//     print("❌ Blocked: _isBroadcastOpen=$_isBroadcastOpen, mounted=$mounted");
+//     return;
+//   }
+  
+//   _isBroadcastOpen = true;
+//   print("✅ Proceeding with broadcast...");
+
+//   try {
+//     Map<String, dynamic> parsed;
+//     if (data is String) {
+//       print("📝 Data is String, parsing...");
+//       if (data.startsWith('{')) {
+//         parsed = Map<String, dynamic>.from(jsonDecode(data));
+//         print("✅ Parsed JSON: $parsed");
+//       } else {
+//         parsed = {"url": data, "type": "video", "duration": 60};
+//         print("✅ Created default structure: $parsed");
+//       }
+//     } else {
+//       print("📝 Data is Map, converting...");
+//       parsed = Map<String, dynamic>.from(data);
+//       print("✅ Converted Map: $parsed");
+//     }
+
+//     final String type = parsed['type'] ?? 'video';
+//     final String url = parsed['url'] ?? '';
+//     final int duration = parsed['duration'] is int
+//         ? parsed['duration']
+//         : int.tryParse(parsed['duration'].toString()) ?? 60;
+
+//     print("🎬 Extracted values:");
+//     print("   - Type: $type");
+//     print("   - URL: $url");
+//     print("   - Duration: $duration");
+//     print("   - OrgId: ${widget.orgid}");
+
+//     if (url.isEmpty) {
+//       print("❌ URL is empty, aborting");
+//       _isBroadcastOpen = false;
+//       return;
+//     }
+
+//     print("🚀 Navigating to BroadcastPage...");
+//     Navigator.push(
+//       context,
+//       MaterialPageRoute(
+//         fullscreenDialog: true,
+//         builder: (_) => BroadcastPage(
+//           type: type,
+//           url: url,
+//           duration: duration,
+//           orgId: widget.orgid,
+//         ),
+//       ),
+//     ).then((_) {
+//       print("✅ BroadcastPage closed");
+//       _isBroadcastOpen = false;
+//     });
+//   } catch (e) {
+//     print("❌ ========== ERROR IN BROADCAST EVENT ==========");
+//     print("❌ Error: $e");
+//     print("❌ Stack trace: ${StackTrace.current}");
+//     _isBroadcastOpen = false;
+//   }
+// }
+
+void _handleBroadcastEvent(dynamic data) {
+  print("🎯 ========== BROADCAST EVENT RECEIVED ==========");
+  print("🎯 Raw data type: ${data.runtimeType}");
+  print("🎯 Raw data: $data");
+  
+  if (_isBroadcastOpen || !mounted) {
+    print("❌ Blocked: _isBroadcastOpen=$_isBroadcastOpen, mounted=$mounted");
+    return;
+  }
+  
+  _isBroadcastOpen = true;
+  print("✅ Proceeding with broadcast...");
+
+  try {
+    Map<String, dynamic> parsed;
+    
+    if (data is String) {
+      print("📝 Data is String, parsing...");
+      if (data.startsWith('{')) {
+        parsed = Map<String, dynamic>.from(jsonDecode(data));
+        print("✅ Parsed JSON");
       } else {
-        parsed = Map<String, dynamic>.from(data);
+        parsed = {"url": data, "type": "video", "duration": 60};
+        print("✅ Created default structure");
       }
+    } else {
+      print("📝 Data is Map, converting...");
+      parsed = Map<String, dynamic>.from(data);
+      print("✅ Converted Map");
+    }
 
-      final String type = parsed['type'] ?? 'video';
-      final String url = parsed['url'] ?? '';
-      final int duration =
-          parsed['duration'] is int
-              ? parsed['duration']
-              : int.tryParse(parsed['duration'].toString()) ?? 60;
-
-      if (url.isEmpty) {
-        _isBroadcastOpen = false;
-        return;
-      }
-
+    // ✅ Check if data contains HTML template
+    if (parsed.containsKey('template')) {
+      print("🎨 HTML template detected, rendering WebView...");
+      
+      // ✅ FIX: Convert duration to int properly
+      final int duration = parsed['duration'] is int
+          ? parsed['duration']
+          : int.tryParse(parsed['duration'].toString()) ?? 120;
+      
+      print("🎨 Parsed duration: $duration");
+      
       Navigator.push(
         context,
         MaterialPageRoute(
           fullscreenDialog: true,
-          builder:
-              (_) => BroadcastPage(
-                type: type,
-                url: url,
-                duration: duration,
-                orgId: widget.orgCode,
-              ),
+          builder: (_) => HtmlBroadcastPage(
+            duration: duration,
+            orgId: widget.orgid,
+            htmlContent: parsed['template'],
+          ),
         ),
-      ).then((_) => _isBroadcastOpen = false);
-    } catch (e) {
-      print("❌ Error handling broadcast event: $e");
-      _isBroadcastOpen = false;
+      ).then((_) {
+        print("✅ HtmlBroadcastPage closed");
+        _isBroadcastOpen = false;
+      });
+      return;
     }
+
+    // ✅ Original video/youtube handling
+    final String type = parsed['type'] ?? 'video';
+    final String url = parsed['url'] ?? '';
+    final int duration = parsed['duration'] is int
+        ? parsed['duration']
+        : int.tryParse(parsed['duration'].toString()) ?? 60;
+
+    print("🎬 Extracted values:");
+    print("   - Type: $type");
+    print("   - URL: $url");
+    print("   - Duration: $duration");
+    print("   - OrgId: ${widget.orgid}");
+
+    if (url.isEmpty) {
+      print("❌ URL is empty, aborting");
+      _isBroadcastOpen = false;
+      return;
+    }
+
+    print("🚀 Navigating to BroadcastPage...");
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (_) => BroadcastPage(
+          type: type,
+          url: url,
+          duration: duration,
+          orgId: widget.orgid,
+        ),
+      ),
+    ).then((_) {
+      print("✅ BroadcastPage closed");
+      _isBroadcastOpen = false;
+    });
+  } catch (e) {
+    print("❌ ========== ERROR IN BROADCAST EVENT ==========");
+    print("❌ Error: $e");
+    print("❌ Stack trace: ${StackTrace.current}");
+    _isBroadcastOpen = false;
   }
+}
 
   void _restartApp() {
     if (!mounted) return;
@@ -355,21 +500,6 @@ Widget _buildMainContent() {
 
              
 
-              // if (_teams.isNotEmpty)
-              //   SizedBox(
-              //     width: 380,
-              //     height: screenHeight * 0.7,
-              //     child: Container(
-              //       margin: const EdgeInsets.only(right: 12, top: 1),
-              //       decoration: BoxDecoration(
-              //         color: Colors.white,
-              //         border: Border.all(color: Colors.grey[300]!, width: 1),
-              //         borderRadius: BorderRadius.circular(6),
-              //       ),
-              //       child: TeamCarousel(
-              //         teams: _teams,
-              //         orgInfo: orgInfo,
-              //       ),
 
               if (_teams.isNotEmpty)
   SizedBox(
@@ -448,24 +578,7 @@ Widget _buildMainContent() {
           ),
         ),
         const SizedBox(height: 20),
-        //    if (_teams.isNotEmpty)
-        // Padding(
-        //   padding: const EdgeInsets.symmetric(horizontal: 16),
-        //   child: SizedBox(
-        //     height: screenHeight * 0.4, // Adjust height as needed
-        //     child: Container(
-        //       decoration: BoxDecoration(
-        //         color: Colors.white,
-        //         border: Border.all(color: Colors.grey[300]!, width: 1),
-        //         borderRadius: BorderRadius.circular(6),
-        //       ),
-        //       child: TeamCarousel(
-        //         teams: _teams,
-        //         orgInfo: orgInfo,
-        //       ),
-        //     ),
-        //   ),
-        // ),
+       
 
         if (_teams.isNotEmpty)
   Padding(
