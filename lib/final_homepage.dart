@@ -206,81 +206,6 @@ BadapatraDisplayHeading _getDefaultDisplayHeading() {
   }
 
 
-
-//   void _handleBroadcastEvent(dynamic data) {
-//   print("🎯 ========== BROADCAST EVENT RECEIVED ==========");
-//   print("🎯 Raw data type: ${data.runtimeType}");
-//   print("🎯 Raw data: $data");
-//   print("🎯 _isBroadcastOpen: $_isBroadcastOpen");
-//   print("🎯 mounted: $mounted");
-  
-//   if (_isBroadcastOpen || !mounted) {
-//     print("❌ Blocked: _isBroadcastOpen=$_isBroadcastOpen, mounted=$mounted");
-//     return;
-//   }
-  
-//   _isBroadcastOpen = true;
-//   print("✅ Proceeding with broadcast...");
-
-//   try {
-//     Map<String, dynamic> parsed;
-//     if (data is String) {
-//       print("📝 Data is String, parsing...");
-//       if (data.startsWith('{')) {
-//         parsed = Map<String, dynamic>.from(jsonDecode(data));
-//         print("✅ Parsed JSON: $parsed");
-//       } else {
-//         parsed = {"url": data, "type": "video", "duration": 60};
-//         print("✅ Created default structure: $parsed");
-//       }
-//     } else {
-//       print("📝 Data is Map, converting...");
-//       parsed = Map<String, dynamic>.from(data);
-//       print("✅ Converted Map: $parsed");
-//     }
-
-//     final String type = parsed['type'] ?? 'video';
-//     final String url = parsed['url'] ?? '';
-//     final int duration = parsed['duration'] is int
-//         ? parsed['duration']
-//         : int.tryParse(parsed['duration'].toString()) ?? 60;
-
-//     print("🎬 Extracted values:");
-//     print("   - Type: $type");
-//     print("   - URL: $url");
-//     print("   - Duration: $duration");
-//     print("   - OrgId: ${widget.orgid}");
-
-//     if (url.isEmpty) {
-//       print("❌ URL is empty, aborting");
-//       _isBroadcastOpen = false;
-//       return;
-//     }
-
-//     print("🚀 Navigating to BroadcastPage...");
-//     Navigator.push(
-//       context,
-//       MaterialPageRoute(
-//         fullscreenDialog: true,
-//         builder: (_) => BroadcastPage(
-//           type: type,
-//           url: url,
-//           duration: duration,
-//           orgId: widget.orgid,
-//         ),
-//       ),
-//     ).then((_) {
-//       print("✅ BroadcastPage closed");
-//       _isBroadcastOpen = false;
-//     });
-//   } catch (e) {
-//     print("❌ ========== ERROR IN BROADCAST EVENT ==========");
-//     print("❌ Error: $e");
-//     print("❌ Stack trace: ${StackTrace.current}");
-//     _isBroadcastOpen = false;
-//   }
-// }
-
 void _handleBroadcastEvent(dynamic data) {
   print("🎯 ========== BROADCAST EVENT RECEIVED ==========");
   print("🎯 Raw data type: ${data.runtimeType}");
@@ -312,16 +237,17 @@ void _handleBroadcastEvent(dynamic data) {
       print("✅ Converted Map");
     }
 
-    // ✅ Check if data contains HTML template
+  
     if (parsed.containsKey('template')) {
       print("🎨 HTML template detected, rendering WebView...");
-      
-      // ✅ FIX: Convert duration to int properly
-      final int duration = parsed['duration'] is int
+
+      int durationMinutes = parsed['duration'] is int
           ? parsed['duration']
-          : int.tryParse(parsed['duration'].toString()) ?? 120;
+          : int.tryParse(parsed['duration'].toString()) ?? 2;
       
-      print("🎨 Parsed duration: $duration");
+      final int duration = durationMinutes * 60;
+      
+      print("🎨 Parsed duration: $durationMinutes minutes = $duration seconds");
       
       Navigator.push(
         context,
@@ -340,7 +266,7 @@ void _handleBroadcastEvent(dynamic data) {
       return;
     }
 
-    // ✅ Original video/youtube handling
+ 
     final String type = parsed['type'] ?? 'video';
     final String url = parsed['url'] ?? '';
     final int duration = parsed['duration'] is int
