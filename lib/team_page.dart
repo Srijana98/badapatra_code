@@ -47,7 +47,7 @@ class _TeamCarouselState extends State<TeamCarousel> {
             items: widget.teams.map((team) {
               return Builder(
                 builder: (BuildContext context) {
-                  return TeamPageCard(  // ✅ REMOVE SizedBox.expand
+                  return TeamPageCard(  
                     team: team,
                     orgInfo: widget.orgInfo,
                   );
@@ -92,11 +92,11 @@ class TeamPageCard extends StatelessWidget {
         border: Border.all(color: Colors.red, width: 2),
         color: Colors.white,
       ),
-      child: SingleChildScrollView(  // ✅ This makes it scrollable
-        physics: const BouncingScrollPhysics(), // ✅ ADD smooth scrolling
+      child: SingleChildScrollView(  
+        physics: const BouncingScrollPhysics(), 
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min, // ✅ ADD THIS
+          mainAxisSize: MainAxisSize.min, 
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -468,79 +468,89 @@ Widget _buildMainContent() {
       ),
     );
   }
-  
+
 
   return SingleChildScrollView(
-    controller: _scrollController,
-    child: Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: CustomSearchBar(
-            controller: _searchController,
-            focusNode: _searchFocusNode,
-            onSearch: _performSearch,
-             badapatradata: _badapatradata,
-          ),
+  controller: _scrollController,
+  child: Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: CustomSearchBar(
+          controller: _searchController,
+          focusNode: _searchFocusNode,
+          onSearch: _performSearch,
+          badapatradata: _badapatradata,
         ),
-        const SizedBox(height: 12),
-        Padding(
-          padding: const EdgeInsets.only(right: 16),
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: SizedBox(
-              height: screenHeight * 0.5,
-              child: WaraBadapatraTable(
-                key: ValueKey(_searchCode),
-                searchCode: _searchCode,
-                onCodeTap:
-                    (service) => setState(() => _selectedService = service),
-                userid: widget.userid,
-                orgid: widget.orgid,
-                orgCode: widget.orgCode,
-                 displayHeading: displayHeading,
+      ),
+      const SizedBox(height: 12),
+      
+    
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Left side - Table (takes more space)
+          Expanded(
+            flex: 60,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: SizedBox(
+                height: screenHeight * 0.7,
+                child: WaraBadapatraTable(
+                  key: ValueKey(_searchCode),
+                  searchCode: _searchCode,
+                  onCodeTap: (service) => setState(() => _selectedService = service),
+                  userid: widget.userid,
+                  orgid: widget.orgid,
+                  orgCode: widget.orgCode,
+                  displayHeading: displayHeading,
+                ),
               ),
             ),
           ),
-        ),
-        const SizedBox(height: 20),
-       
-
-        if (_teams.isNotEmpty)
-  Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16),
-    child: Column(
-      children: [
-        // Team Carousel
-        SizedBox(
-          height: screenHeight * 0.3,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.grey[300]!, width: 1),
-              borderRadius: BorderRadius.circular(6),
+          
+          const SizedBox(width: 8),
+          
+          // Right side - Teams and Gallery
+          if (_teams.isNotEmpty)
+            Expanded(
+              flex: 40,
+              child: Column(
+                children: [
+                  // Team Carousel
+                  Container(
+                    height: screenHeight * 0.35,
+                    margin: const EdgeInsets.only(right: 12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey[300]!, width: 1),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: TeamCarousel(
+                      teams: _teams,
+                      orgInfo: orgInfo,
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 12),
+                  
+                  // Gallery Carousel
+                  if (_galleryItems.isNotEmpty)
+                    Container(
+                      margin: const EdgeInsets.only(right: 12),
+                      child: GalleryCarousel(
+                        galleryItems: _galleryItems,
+                      ),
+                    ),
+                ],
+              ),
             ),
-            child: TeamCarousel(
-              teams: _teams,
-              orgInfo: orgInfo,
-            ),
-          ),
-        ),
-        
-        const SizedBox(height: 12),
-        
-        // Gallery Carousel below Team Carousel
-        if (_galleryItems.isNotEmpty)
-          GalleryCarousel(
-            galleryItems: _galleryItems,
-          ),
-      ],
-    ),
+        ],
+      ),
+      const SizedBox(height: 20),
+    ],
   ),
-    
-      ],
-    ),
-  );
+);
 
 }
   

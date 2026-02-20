@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 class HeaderSection extends StatelessWidget {
@@ -11,43 +12,44 @@ class HeaderSection extends StatelessWidget {
         MediaQuery.of(context).orientation == Orientation.portrait;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    final double logoHeight = isPortrait ? 45 : 35;
+    // ✅ REDUCED sizes for portrait mode
+    final double logoHeight = isPortrait ? 60 : 55;
     final double flagHeight = isPortrait ? 45 : 40;
-    final double contactBoxHeight = isPortrait ? 70 : 60;
-    final double fontSizeMain = isPortrait ? 15 : 14;
-    final double fontSizeSub = isPortrait ? 11 : 10;
+    final double contactBoxHeight = isPortrait ? 55 : 60;
+    final double fontSizeMain = isPortrait ? 15 : 16;
+    final double fontSizeSub = isPortrait ? 12 : 14;
 
     return Container(
       width: double.infinity,
       color: Colors.white,
       padding: EdgeInsets.only(
-        top: 0,
+        top: 40,
+        // top: isPortrait ? 30 : 0,
         left: screenWidth < 600 ? 8 : 16,
         right: screenWidth < 600 ? 8 : 16,
-        bottom: 4,
+        bottom: isPortrait ? 2 : 4, 
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-        orgInfo['logo'] != null && orgInfo['logo'].toString().isNotEmpty
-    ? Image.network(
-        orgInfo['logo'],
-        height: logoHeight,
-        fit: BoxFit.contain,
-        errorBuilder: (context, error, stackTrace) {
-          return Image.asset(
-            'assets/logonepal.jpg',
-            height: logoHeight,
-          );
-        },
-      )
-    : Image.asset(
-        'assets/logonepal.jpg',
-        height: logoHeight,
-      ),
+          orgInfo['logo'] != null && orgInfo['logo'].toString().isNotEmpty
+              ? Image.network(
+                  orgInfo['logo'],
+                  height: logoHeight,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      'assets/logonepal.jpg',
+                      height: logoHeight,
+                    );
+                  },
+                )
+              : Image.asset(
+                  'assets/logonepal.jpg',
+                  height: logoHeight,
+                ),
 
-
-          const SizedBox(width: 6),
+          SizedBox(width: isPortrait ? 4 : 6), 
 
           // Municipality / Org Info
           Expanded(
@@ -55,22 +57,23 @@ class HeaderSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-
                 if (orgInfo['slogan'] != null &&
-          orgInfo['slogan'].toString().isNotEmpty)
-        Padding(
-          padding: const EdgeInsets.only(bottom: 2),
-          child: Text(
-            orgInfo['slogan'],
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.black87,
-              fontSize: fontSizeSub,
-              fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
+                    orgInfo['slogan'].toString().isNotEmpty)
+                  Padding(
+                    padding: EdgeInsets.only(bottom: isPortrait ? 1 : 2), 
+                    child: Text(
+                      orgInfo['slogan'],
+                      textAlign: TextAlign.center,
+                        maxLines: 1,  // ✅ ADD THIS
+                    overflow: TextOverflow.ellipsis, 
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: fontSizeSub,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
                 Text(
                   orgInfo['orgname'] ?? '',
                   textAlign: TextAlign.center,
@@ -100,15 +103,18 @@ class HeaderSection extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 6),
-
+          SizedBox(width: isPortrait ? 4 : 6),
           // Contact Box + Static Flag
           SizedBox(
             height: contactBoxHeight,
             child: Row(
               children: [
+
                 Container(
-                  padding: const EdgeInsets.all(3),
+  
+  padding: EdgeInsets.all(isPortrait ? 4 : 6),
+
+
                   decoration: BoxDecoration(
                     color: const Color(0xFFF1EEEE),
                     borderRadius: BorderRadius.circular(10),
@@ -128,22 +134,25 @@ class HeaderSection extends StatelessWidget {
                           Icons.phone,
                           orgInfo['contact'] ?? '',
                           bg: Colors.red,
+                          isPortrait: isPortrait, 
                         ),
                         _contactRow(
                           Icons.language,
                           orgInfo['website'] ?? '',
                           bg: Colors.blue,
+                          isPortrait: isPortrait,
                         ),
                         _contactRow(
                           Icons.email,
                           orgInfo['email'] ?? '',
                           bg: Colors.green,
+                          isPortrait: isPortrait,
                         ),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(width: 6),
+                SizedBox(width: isPortrait ? 4 : 6), 
                 Opacity(
                   opacity: 0.6,
                   child: Image.asset(
@@ -166,20 +175,28 @@ class HeaderSection extends StatelessWidget {
     String text, {
     Color bg = Colors.grey,
     Color color = Colors.black,
+    bool isPortrait = false, 
   }) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 2.0),
+      padding: EdgeInsets.only(bottom: isPortrait ? 1.0 : 2.0), 
       child: Row(
         children: [
           CircleAvatar(
             backgroundColor: bg,
-            radius: 13,
-            child: Icon(icon, color: Colors.white, size: 13),
+            radius: isPortrait ? 13 : 16, 
+            child: Icon(icon, color: Colors.white, size: isPortrait ? 13 : 16),
           ),
-          const SizedBox(width: 4),
-          Text(text, style: TextStyle(color: color, fontSize: 12)),
+          SizedBox(width: isPortrait ? 3 : 4), 
+          Text(
+            text,
+            style: TextStyle(
+              color: color,
+              fontSize: isPortrait ? 20 : 22, 
+            ),
+          ),
         ],
       ),
     );
   }
 }
+

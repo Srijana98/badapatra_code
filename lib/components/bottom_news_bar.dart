@@ -22,7 +22,7 @@ class BottomNewsBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
+      height: 35,
       width: double.infinity,
     
       child: Row(
@@ -39,18 +39,20 @@ class BottomNewsBar extends StatelessWidget {
                 ),
                 CustomPaint(
                   painter: WhiteTriangleLabelPainter(),
-                  size: const Size(160, 35),
+                  size: const Size(120, 35),
                 ),
                 Positioned.fill(
-                  left: 135,
+                  left: 95,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    //padding: const EdgeInsets.symmetric(horizontal: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Marquee(
                       text: _buildNewsText(),
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        //fontWeight: FontWeight.bold,
+                         fontWeight: FontWeight.w500,
                         height: 1.3,
                       ),
                       velocity: 30,

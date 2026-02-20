@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 
@@ -22,50 +23,49 @@ class _TopNewsBarState extends State<TopNewsBar> {
     if (widget.notices.isEmpty) {
       return const SizedBox.shrink();
     }
-final allNotices = widget.notices
-      .map((n) => _stripHtmlTags(n['notices'] ?? ''))
-      .join('   ||   ');
+    
+    final allNotices = widget.notices
+        .map((n) => _stripHtmlTags(n['notices'] ?? ''))
+        .join('   ||   ');
+    
     return Container(
-      height: 40,
+      height: 35,
       color: Color(0xFF233072),
-
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,  
         children: [
-
-
           Container(
-  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-  color: Colors.red.shade700,
-  child: const Text(
-    'सूचनाहरू(**):',
-    style: TextStyle(
-      color: Colors.white,
-      fontWeight: FontWeight.bold,
-      fontSize: 15,
-    ),
-  ),
-),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            color: Colors.red.shade700,
+            alignment: Alignment.center,  
+            child: const Text(
+              'सूचनाहरू(**):',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+              ),
+            ),
+          ),
 
-          
           Expanded(
-  child: Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 10),
-    child: Marquee(
-      text: allNotices,
-      style: const TextStyle(
-        color: Colors.white,
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-      ),
-      scrollAxis: Axis.horizontal,
-      blankSpace: 50,
-      velocity: 40,
-      pauseAfterRound: Duration.zero,
-      startPadding: 10,
-    ),
-  ),
-),
-
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Marquee(
+                text: allNotices,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+                scrollAxis: Axis.horizontal,
+                blankSpace: 50,
+                velocity: 40,
+                pauseAfterRound: Duration.zero,
+                startPadding: 10,
+              ),
+            ),
+          ),
         ],
       ),
     );

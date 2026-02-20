@@ -140,7 +140,7 @@ class WaraBadapatraTable extends StatefulWidget {
   final String orgid;
   final String orgCode;
   final BadapatraDisplayHeading? displayHeading;
-  final List<dynamic> teams; // ADD THIS
+  final List<dynamic> teams; 
 
   const WaraBadapatraTable({
     Key? key,
@@ -150,7 +150,7 @@ class WaraBadapatraTable extends StatefulWidget {
     required this.orgid,
     required this.orgCode,
     this.displayHeading,
-    this.teams = const [], // ADD THIS
+    this.teams = const [], 
   }) : super(key: key);
 
   @override
@@ -207,11 +207,13 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
   Future<List<Service>> _fetchWaraBadapatra() async {
     final url = Uri.parse(
       kIsWeb
-          ? 'https://cors-anywhere.herokuapp.com/https://digitalbadapatra.com/api/v1/get_wada_badapatra'
-          : 'https://digitalbadapatra.com/api/v1/get_wada_badapatra',
+          ? 'https://cors-anywhere.herokuapp.com/https://digitalbadapatra.com/api/v1/get_ward_badapatra'
+          : 'https://digitalbadapatra.com/api/v1/get_ward_badapatra',
     );
 
     try {
+ 
+
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -221,6 +223,8 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
           'org_code': widget.orgCode,
         },
       );
+       print("🔹 HTTP status: ${response.statusCode}");
+    print("🔹 Response body: ${response.body}");
 
       if (response.statusCode == 200) {
         final decoded = jsonDecode(response.body);
@@ -557,3 +561,5 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
     );
   }
 }
+
+
