@@ -378,63 +378,62 @@ Widget _buildMainContent() {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                flex: 85,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: CustomSearchBar(
-                        controller: _searchController,
-                        focusNode: _searchFocusNode,
-                        onSearch: _performSearch,
-                         badapatradata: _badapatradata,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 16),
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            return SizedBox(
-                              width: constraints.maxWidth,
-                              height: screenHeight * 0.7,
-                              child: WaraBadapatraTable(
-                                key: ValueKey(_searchCode),
-                                searchCode: _searchCode,
-                                onCodeTap:
-                                    (service) => setState(
-                                      () => _selectedService = service,
-                                    ),
-                                userid: widget.userid,
-                                orgid: widget.orgid,
-                                orgCode: widget.orgCode,
-                                displayHeading: displayHeading,
-                      
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
+              
+              // ADD THIS NEW BLOCK:
+Expanded(
+ // flex: 85,
+  //flex: 78,
+  flex: 70,
+  child: Padding(
+    padding: const EdgeInsets.only(left: 16, right: 8),
+    child: LayoutBuilder(
+      builder: (context, constraints) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            CustomSearchBar(
+              controller: _searchController,
+              focusNode: _searchFocusNode,
+              onSearch: _performSearch,
+              badapatradata: _badapatradata,
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              width: constraints.maxWidth,
+              height: screenHeight * 0.7,
+              child: WaraBadapatraTable(
+                key: ValueKey(_searchCode),
+                searchCode: _searchCode,
+                onCodeTap: (service) => setState(
+                  () => _selectedService = service,
                 ),
+                userid: widget.userid,
+                orgid: widget.orgid,
+                orgCode: widget.orgCode,
+                displayHeading: displayHeading,
               ),
+            ),
+          ],
+        );
+      },
+    ),
+  ),
+),
 
              
 
 
               if (_teams.isNotEmpty)
   SizedBox(
-    width: 380,
+      //width: 220,
+     width: 180,
     child: Column(
       children: [
         // Team Carousel
         Container(
-          height: screenHeight * 0.45,
+          //height: screenHeight * 0.45,
+          height: screenHeight * 0.40,
           margin: const EdgeInsets.only(right: 12, top: 1),
           decoration: BoxDecoration(
             color: Colors.white,

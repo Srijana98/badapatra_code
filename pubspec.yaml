@@ -18,6 +18,7 @@ dependencies:
   qr_flutter: ^4.1.0
   cached_network_image: ^3.3.1 
   carousel_slider: ^5.1.1
+  flutter_html: ^3.0.0-beta.2
 
   # ✅ Secure storage for token/password
   flutter_secure_storage: ^9.0.0

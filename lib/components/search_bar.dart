@@ -208,16 +208,37 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
     }).toList();
   }
 
+  // List<Widget> _buildDataRow(BuildContext context, Service s) {
+  //   final values = [
+  //     s.code,
+  //     s.serviceTypeName,
+  //     s.serviceRecDetail,
+  //     s.fee,
+  //     s.time,
+  //     s.serviceProvider,
+  //     s.complainListen,
+  //   ];
+
   List<Widget> _buildDataRow(BuildContext context, Service s) {
-    final values = [
-      s.code,
-      s.serviceTypeName,
-      s.serviceRecDetail,
-      s.fee,
-      s.time,
-      s.serviceProvider,
-      s.complainListen,
-    ];
+  // HTML strip helper
+  String stripHtml(String text) {
+    return text
+        .replaceAll(RegExp(r'<[^>]*>'), '')
+        .replaceAll('&nbsp;', ' ')
+        .replaceAll('\r\n', '\n')
+        .replaceAll(RegExp(r'\n{3,}'), '\n\n')
+        .trim();
+  }
+
+  final values = [
+    s.code,
+    s.serviceTypeName,
+    stripHtml(s.serviceRecDetail), // ✅ HTML hatayo
+    s.fee,
+    s.time,
+    s.serviceProvider,
+    s.complainListen,
+  ];
     final flexes =
         Responsive.isTV(context)
             ? [1, 2, 3, 2, 2, 2, 2]
@@ -271,7 +292,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
     final height = Responsive.isTV(context) ? 40.0 : 30.0;
 
     return Container(
-      width: totalTableWidth, // MATCH TABLE WIDTH EXACTLY
+  width: double.infinity,
       height: height,
       margin: const EdgeInsets.only(top: 1),
       decoration: BoxDecoration(

@@ -12,25 +12,33 @@ class HeaderSection extends StatelessWidget {
         MediaQuery.of(context).orientation == Orientation.portrait;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    // ✅ REDUCED sizes for portrait mode
-    final double logoHeight = isPortrait ? 60 : 55;
-    final double flagHeight = isPortrait ? 45 : 40;
-    final double contactBoxHeight = isPortrait ? 55 : 60;
-    final double fontSizeMain = isPortrait ? 15 : 16;
-    final double fontSizeSub = isPortrait ? 12 : 14;
+    // // ✅ REDUCED sizes for portrait mode
+    // final double logoHeight = isPortrait ? 60 : 55;
+    // final double flagHeight = isPortrait ? 45 : 40;
+    // final double contactBoxHeight = isPortrait ? 55 : 60;
+    // final double fontSizeMain = isPortrait ? 15 : 16;
+    // final double fontSizeSub = isPortrait ? 12 : 14;
+ final double logoHeight = isPortrait ? 45 : 50;
+final double flagHeight = isPortrait ? 32 : 38;
+final double contactBoxHeight = isPortrait ? 42 : 52;
+final double fontSizeMain = isPortrait ? 13 : 15;
+final double fontSizeSub = isPortrait ? 10 : 12;
 
     return Container(
       width: double.infinity,
       color: Colors.white,
       padding: EdgeInsets.only(
-        top: 40,
+       // top: 40,
         // top: isPortrait ? 30 : 0,
+        top: isPortrait ? 6 : 4,
         left: screenWidth < 600 ? 8 : 16,
         right: screenWidth < 600 ? 8 : 16,
-        bottom: isPortrait ? 2 : 4, 
+      //  bottom: isPortrait ? 2 : 4, 
+      bottom: isPortrait ? 1 : 2,
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      //  crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           orgInfo['logo'] != null && orgInfo['logo'].toString().isNotEmpty
               ? Image.network(
@@ -55,12 +63,14 @@ class HeaderSection extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
+               mainAxisAlignment: MainAxisAlignment.start, // ✅ ADD THIS
               mainAxisSize: MainAxisSize.min,
               children: [
                 if (orgInfo['slogan'] != null &&
                     orgInfo['slogan'].toString().isNotEmpty)
                   Padding(
-                    padding: EdgeInsets.only(bottom: isPortrait ? 1 : 2), 
+                   // padding: EdgeInsets.only(bottom: isPortrait ? 1 : 2), 
+                   padding: EdgeInsets.only(bottom: 0),
                     child: Text(
                       orgInfo['slogan'],
                       textAlign: TextAlign.center,
@@ -181,19 +191,33 @@ class HeaderSection extends StatelessWidget {
       padding: EdgeInsets.only(bottom: isPortrait ? 1.0 : 2.0), 
       child: Row(
         children: [
+          // CircleAvatar(
+          //   backgroundColor: bg,
+          //   radius: isPortrait ? 13 : 16, 
+          //   child: Icon(icon, color: Colors.white, size: isPortrait ? 13 : 16),
+          // ),
+          // SizedBox(width: isPortrait ? 3 : 4), 
+          // Text(
+          //   text,
+          //   style: TextStyle(
+          //     color: color,
+          //     fontSize: isPortrait ? 20 : 22, 
+          //   ),
+          // ),
+
           CircleAvatar(
-            backgroundColor: bg,
-            radius: isPortrait ? 13 : 16, 
-            child: Icon(icon, color: Colors.white, size: isPortrait ? 13 : 16),
-          ),
-          SizedBox(width: isPortrait ? 3 : 4), 
-          Text(
-            text,
-            style: TextStyle(
-              color: color,
-              fontSize: isPortrait ? 20 : 22, 
-            ),
-          ),
+  backgroundColor: bg,
+  radius: isPortrait ? 9 : 12,
+  child: Icon(icon, color: Colors.white, size: isPortrait ? 9 : 12),
+),
+SizedBox(width: isPortrait ? 3 : 4),
+Text(
+  text,
+  style: TextStyle(
+    color: color,
+    fontSize: isPortrait ? 10 : 12,   // ✅ FIXED
+  ),
+),
         ],
       ),
     );

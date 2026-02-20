@@ -8,6 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'models/service.dart';
 import 'services/hive_service.dart';
 import 'package:nagarikbadapatra/l10n/app_localizations.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 
 class DisplayHeading {
@@ -544,22 +545,80 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
     );
   }
 
-  Widget _cell(double width, String text, Color color, {bool bold = false}) {
-    return SizedBox(
-      width: width,
-      child: Text(
-        text,
-        style: TextStyle(
-          color: color,
-          fontSize: 13.8,
-          height: 1.5,
-          fontWeight: bold ? FontWeight.bold : FontWeight.normal,
-        ),
-        softWrap: true,
-        overflow: TextOverflow.visible,
+  
+// AFTER:
+// Widget _cell(double width, String text, Color color, {bool bold = false}) {
+//   final bool isHtml = text.contains('<') && text.contains('>');
+
+//   return SizedBox(
+//     width: width,
+//     child: isHtml
+//         ? Html(
+//             data: text,
+//             style: {
+//               "body": Style(
+//                 color: color,
+//                 fontSize: FontSize(13.0),
+//                 margin: Margins.zero,
+//                 padding: HtmlPaddings.zero,
+//               ),
+//               "ul": Style(
+//                 // ✅ Left padding diyera bullet visible huncha
+//                 margin: Margins.only(left: 0),
+//                 padding: HtmlPaddings.only(left: 16),
+//               ),
+//               "li": Style(
+//                 color: color,
+//                 fontSize: FontSize(13.0),
+//                 lineHeight: LineHeight(1.4),
+//                 // ✅ Bullet visible garnu ko lagi
+//                // listStyleType: ListStyleType.disc,
+//                  listStyleType: ListStyleType.none,
+//               ),
+//               "p": Style(
+//                 margin: Margins.zero,
+//                 padding: HtmlPaddings.zero,
+//               ),
+//             },
+//           )
+//         : Text(
+//             text,
+//             style: TextStyle(
+//               color: color,
+//               fontSize: 13.8,
+//               height: 1.5,
+//               fontWeight: bold ? FontWeight.bold : FontWeight.normal,
+//             ),
+//             softWrap: true,
+//             overflow: TextOverflow.visible,
+//           ),
+//   );
+// }
+// REPLACE WITH:
+Widget _cell(double width, String text, Color color, {bool bold = false}) {
+  // HTML tags strip garera clean text matra nikaal
+  final String cleanText = text
+      .replaceAll(RegExp(r'<[^>]*>'), '') 
+      .replaceAll('&nbsp;', ' ')          
+      .replaceAll('\r\n', '\n')            
+      .replaceAll(RegExp(r'\n{3,}'), '\n\n')
+      .trim();
+
+  return SizedBox(
+    width: width,
+    child: Text(
+      cleanText,
+      style: TextStyle(
+        color: color,
+        fontSize: 13.8,
+        height: 1.5,
+        fontWeight: bold ? FontWeight.bold : FontWeight.normal,
       ),
-    );
-  }
+      softWrap: true,
+      overflow: TextOverflow.visible,
+    ),
+  );
+}
 }
 
 
