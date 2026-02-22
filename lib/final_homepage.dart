@@ -383,7 +383,8 @@ Widget _buildMainContent() {
 Expanded(
  // flex: 85,
   //flex: 78,
-  flex: 70,
+  //flex: 70,
+   flex: 60,
   child: Padding(
     padding: const EdgeInsets.only(left: 16, right: 8),
     child: LayoutBuilder(
@@ -427,13 +428,13 @@ Expanded(
               if (_teams.isNotEmpty)
   SizedBox(
       //width: 220,
-     width: 180,
+     width: 220,
     child: Column(
       children: [
         // Team Carousel
         Container(
           //height: screenHeight * 0.45,
-          height: screenHeight * 0.40,
+          height: screenHeight * 0.42,
           margin: const EdgeInsets.only(right: 12, top: 1),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -451,6 +452,7 @@ Expanded(
         // Gallery Carousel below Team Carousel
         if (_galleryItems.isNotEmpty)
           Container(
+             height: screenHeight * 0.45,
             margin: const EdgeInsets.only(right: 12),
             child: GalleryCarousel(
               galleryItems: _galleryItems,

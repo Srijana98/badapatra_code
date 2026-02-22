@@ -87,6 +87,7 @@ class TeamPageCard extends StatelessWidget {
 
     return Container(
       width: double.infinity,
+      height: double.infinity,
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.red, width: 2),
@@ -130,16 +131,7 @@ class TeamPageCard extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(
-                        orgInfo['orgname'] ?? '',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.red,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 1),
+                    
                       Text(
                         orgInfo['orgaddress1'] ?? '',
                         textAlign: TextAlign.center,

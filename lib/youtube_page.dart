@@ -124,43 +124,83 @@ class _GalleryCardState extends State<GalleryCard> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      margin: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-        side: const BorderSide(color: Colors.red, width: 3),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ClipRRect(
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Card(
+  //     elevation: 4,
+  //     margin: EdgeInsets.zero,
+  //     shape: RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.circular(8),
+  //       side: const BorderSide(color: Colors.red, width: 3),
+  //     ),
+  //     child: Column(
+  //       mainAxisSize: MainAxisSize.min,
+  //       children: [
+  //         ClipRRect(
+  //           borderRadius: const BorderRadius.only(
+  //             topLeft: Radius.circular(8),
+  //             topRight: Radius.circular(8),
+  //           ),
+  //           child: _buildMedia(),
+  //         ),
+
+  //         Container(
+  //           width: double.infinity,
+  //        // padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+  //        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+  //           child: Text(
+  //             widget.title,
+  //             style: const TextStyle(
+  //               fontSize: 16,
+  //               fontWeight: FontWeight.bold,
+  //               color: Colors.red,
+  //             ),
+  //             overflow: TextOverflow.ellipsis,
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  // AFTER:
+Widget build(BuildContext context) {
+  return Card(
+    elevation: 4,
+    margin: EdgeInsets.zero,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8),
+      side: const BorderSide(color: Colors.red, width: 3),
+    ),
+    child: Column(
+      mainAxisSize: MainAxisSize.max, // ← max लिनुस्
+      children: [
+        Expanded( // ← image ले बाँकी space लिनुस्
+          child: ClipRRect(
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(8),
               topRight: Radius.circular(8),
             ),
             child: _buildMedia(),
           ),
-
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-            child: Text(
-              widget.title,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.red,
-              ),
-              overflow: TextOverflow.ellipsis,
+        ),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+          child: Text(
+            widget.title,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.red,
             ),
+            overflow: TextOverflow.ellipsis,
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
 
   Widget _buildMedia() {
     if (widget.mediaType == 'VIDEO' && _controller != null) {
@@ -172,7 +212,10 @@ class _GalleryCardState extends State<GalleryCard> {
 
     return Image.network(
       widget.imageUrl,
-      height: 180,
+     //eight: 180,
+      //hht: 250,  
+      //ight: 180,
+       height: double.infinity,
       width: double.infinity,
       fit: BoxFit.cover,
     );

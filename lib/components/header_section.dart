@@ -18,11 +18,20 @@ class HeaderSection extends StatelessWidget {
     // final double contactBoxHeight = isPortrait ? 55 : 60;
     // final double fontSizeMain = isPortrait ? 15 : 16;
     // final double fontSizeSub = isPortrait ? 12 : 14;
- final double logoHeight = isPortrait ? 45 : 50;
-final double flagHeight = isPortrait ? 32 : 38;
-final double contactBoxHeight = isPortrait ? 42 : 52;
-final double fontSizeMain = isPortrait ? 13 : 15;
-final double fontSizeSub = isPortrait ? 10 : 12;
+ //nal double logoHeight = isPortrait ? 45 : 90;
+//final double flagHeight = isPortrait ? 32 : 38;
+//final double Height = isPortrait ? 32 : contactBoxHeight;
+//nal double contactBoxHeight = isPortrait ? 42 : 100;
+//nal double flagHeight = isPortrait ? 32 : contactBoxHeight; // ✅ अब use गर्न मिल्छ
+//nal double contactBoxHeight = isPortrait ? 42 : 52;
+// final double fontSizeMain = isPortrait ? 13 : 15;
+// final double fontSizeSub = isPortrait ? 10 : 12;
+final double contactBoxHeight = isPortrait ? 42 : 100; // ← पहिले define
+final double logoHeight = isPortrait ? 45 : contactBoxHeight; // ← same height
+final double flagHeight = isPortrait ? 32 : contactBoxHeight; // ← same height
+
+final double fontSizeMain = isPortrait ? 16 : 42;
+final double fontSizeSub = isPortrait ? 13 : 32;
 
     return Container(
       width: double.infinity,
@@ -59,13 +68,18 @@ final double fontSizeSub = isPortrait ? 10 : 12;
 
           SizedBox(width: isPortrait ? 4 : 6), 
 
-          // Municipality / Org Info
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-               mainAxisAlignment: MainAxisAlignment.start, // ✅ ADD THIS
-              mainAxisSize: MainAxisSize.min,
-              children: [
+       
+    Expanded(
+  child: SizedBox(
+    height: contactBoxHeight,
+    child: FittedBox(
+      fit: BoxFit.scaleDown,
+      alignment: Alignment.center,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
                 if (orgInfo['slogan'] != null &&
                     orgInfo['slogan'].toString().isNotEmpty)
                   Padding(
@@ -112,6 +126,8 @@ final double fontSizeSub = isPortrait ? 10 : 12;
                 ),
               ],
             ),
+    ),
+          ),
           ),
           SizedBox(width: isPortrait ? 4 : 6),
           // Contact Box + Static Flag
@@ -122,8 +138,9 @@ final double fontSizeSub = isPortrait ? 10 : 12;
 
                 Container(
   
-  padding: EdgeInsets.all(isPortrait ? 4 : 6),
-
+ // padding: EdgeInsets.all(isPortrait ? 4 : 6),
+ padding: EdgeInsets.all(isPortrait ? 4 : 14),
+  width: isPortrait ? null : screenWidth * 0.20,
 
                   decoration: BoxDecoration(
                     color: const Color(0xFFF1EEEE),
@@ -145,18 +162,21 @@ final double fontSizeSub = isPortrait ? 10 : 12;
                           orgInfo['contact'] ?? '',
                           bg: Colors.red,
                           isPortrait: isPortrait, 
+                           fontSize: fontSizeSub,
                         ),
                         _contactRow(
                           Icons.language,
                           orgInfo['website'] ?? '',
                           bg: Colors.blue,
                           isPortrait: isPortrait,
+                           fontSize: fontSizeSub,
                         ),
                         _contactRow(
                           Icons.email,
                           orgInfo['email'] ?? '',
                           bg: Colors.green,
                           isPortrait: isPortrait,
+                           fontSize: fontSizeSub,
                         ),
                       ],
                     ),
@@ -186,36 +206,31 @@ final double fontSizeSub = isPortrait ? 10 : 12;
     Color bg = Colors.grey,
     Color color = Colors.black,
     bool isPortrait = false, 
+    double fontSize = 10, 
   }) {
     return Padding(
       padding: EdgeInsets.only(bottom: isPortrait ? 1.0 : 2.0), 
       child: Row(
         children: [
-          // CircleAvatar(
-          //   backgroundColor: bg,
-          //   radius: isPortrait ? 13 : 16, 
-          //   child: Icon(icon, color: Colors.white, size: isPortrait ? 13 : 16),
-          // ),
-          // SizedBox(width: isPortrait ? 3 : 4), 
-          // Text(
-          //   text,
-          //   style: TextStyle(
-          //     color: color,
-          //     fontSize: isPortrait ? 20 : 22, 
-          //   ),
-          // ),
 
           CircleAvatar(
   backgroundColor: bg,
-  radius: isPortrait ? 9 : 12,
-  child: Icon(icon, color: Colors.white, size: isPortrait ? 9 : 12),
+  // radius: isPortrait ? 9 : 12,
+  // child: Icon(icon, color: Colors.white, size: isPortrait ? 9 : 12),
+//   radius: isPortrait ? 9 : 15,
+// child: Icon(icon, color: Colors.white, size: isPortrait ? 9 : 15),
+radius: isPortrait ? 9 : 30,
+child: Icon(icon, color: Colors.white, size: isPortrait ? 9 : 28)
 ),
 SizedBox(width: isPortrait ? 3 : 4),
 Text(
   text,
   style: TextStyle(
     color: color,
-    fontSize: isPortrait ? 10 : 12,   // ✅ FIXED
+ //   fontSize: isPortrait ? 10 : 12,   // ✅ FIXED
+ //ntSize: isPortrait ? 10 : 16,
+ //ntSize: isPortrait ? 10 : 34,
+ fontSize: fontSize,
   ),
 ),
         ],

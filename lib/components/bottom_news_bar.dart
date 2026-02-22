@@ -21,8 +21,10 @@ class BottomNewsBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
     return Container(
-      height: 35,
+      //ight: 35,
+        height: isLandscape ? 70.0 : 35.0,
       width: double.infinity,
     
       child: Row(
@@ -66,17 +68,58 @@ class BottomNewsBar extends StatelessWidget {
           ),
           
           // QR Code section on the right
-          if (qrUrl != null && qrUrl!.isNotEmpty)
-            Container(
-              width: 50,
-              height: 50,
-              color: Colors.white,
+  //         if (qrUrl != null && qrUrl!.isNotEmpty)
+  //           Container(
+  //             width: 50,
+  //             height: 50,
+  //             color: Colors.white,
          
              
-            child  :QrImageView(
-  data: qrUrl!,
-  version: QrVersions.auto,
-  size: 60,
+  //           child  :QrImageView(
+  // data: qrUrl!,
+  // version: QrVersions.auto,
+  // size: 60,
+  if (qrUrl != null && qrUrl!.isNotEmpty)
+  Builder(
+    builder: (context) {
+     //inal isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+      // //nal qrSize = isLandscape ? 80.0 : 50.0;
+      // final qrSize = isLandscape ? screenWidth * 0.06 : 50.0; 
+      // return Container(
+      //   width: qrSize,
+      //   height: qrSize,
+      //   color: Colors.white,
+      //   child: QrImageView(
+      //     data: qrUrl!,
+      //     version: QrVersions.auto,
+      //     size: isLandscape ? 90.0 : 60.0,
+      // AFTER:
+// final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+// final screenWidth = MediaQuery.of(context).size.width;
+// final qrSize = isLandscape ? screenWidth * 0.06 : 50.0; // ← screen अनुसार
+// return Container(
+//   width: qrSize,
+//   height: qrSize,
+//   color: Colors.white,
+//   child: QrImageView(
+//     data: qrUrl!,
+//     version: QrVersions.auto,
+//     size: qrSize, // ← same size
+
+
+// AFTER:
+final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+final screenWidth = MediaQuery.of(context).size.width;
+final qrSize = isLandscape ? screenWidth * 0.08 : 50.0; // ← 0.06 → 0.08
+return Container(
+  width: qrSize,
+  height: qrSize,
+  color: Colors.white,
+  alignment: Alignment.centerRight, // ← right align
+  child: QrImageView(
+    data: qrUrl!,
+    version: QrVersions.auto,
+    size: qrSize,
   backgroundColor: Colors.white,
 
   eyeStyle: const QrEyeStyle(
@@ -100,7 +143,8 @@ class BottomNewsBar extends StatelessWidget {
     );
   },
 ),
-
+      );
+    }
             ),
         ],
       ),
