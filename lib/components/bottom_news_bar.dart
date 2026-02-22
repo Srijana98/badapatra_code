@@ -76,7 +76,7 @@ class BottomNewsBar extends StatelessWidget {
             child  :QrImageView(
   data: qrUrl!,
   version: QrVersions.auto,
-  size: 44,
+  size: 60,
   backgroundColor: Colors.white,
 
   eyeStyle: const QrEyeStyle(

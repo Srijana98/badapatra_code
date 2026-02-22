@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
@@ -62,63 +61,141 @@ class BadapatraDisplayHeading {
   }
 
   // Get list of visible columns with their data using localization
-  List<ColumnConfig> getVisibleColumns(bool isPortrait, BuildContext context) {
-    final baseMultiplier = isPortrait ? 16.0 : 14.5;
-    List<ColumnConfig> columns = [];
+  // List<ColumnConfig> getVisibleColumns(bool isPortrait, BuildContext context) {
+  //   final baseMultiplier = isPortrait ? 16.0 : 14.5;
+  // List<ColumnConfig> getVisibleColumns(bool isPortrait, BuildContext context) {
+  // final baseMultiplier = isPortrait ? 11.0 : 10.0; // ✅ reduced from 16/14.5
+  //   List<ColumnConfig> columns = [];
 
-    if (sn.isVisible) {
-      columns.add(ColumnConfig(
-        key: 'sn',
-        width: double.parse(sn.width) * baseMultiplier,
-        title: AppLocalizations.of(context)!.idNo,
-      ));
-    }
-    if (serviceTypename.isVisible) {
-      columns.add(ColumnConfig(
-        key: 'service_typename',
-        width: double.parse(serviceTypename.width) * baseMultiplier,
-        title: AppLocalizations.of(context)!.serviceType,
-      ));
-    }
-    if (serviceRecdetail.isVisible) {
-      columns.add(ColumnConfig(
-        key: 'service_recdetail',
-        width: double.parse(serviceRecdetail.width) * baseMultiplier,
-        title: AppLocalizations.of(context)!.serviceRequirement,
-      ));
-    }
-    if (fee.isVisible) {
-      columns.add(ColumnConfig(
-        key: 'fee',
-        width: double.parse(fee.width) * baseMultiplier,
-        title: AppLocalizations.of(context)!.price,
-      ));
-    }
-    if (time.isVisible) {
-      columns.add(ColumnConfig(
-        key: 'time',
-        width: double.parse(time.width) * baseMultiplier,
-        title: AppLocalizations.of(context)!.time,
-      ));
-    }
-    if (serviceProvider.isVisible) {
-      columns.add(ColumnConfig(
-        key: 'service_provider',
-        width: double.parse(serviceProvider.width) * baseMultiplier,
-        title: AppLocalizations.of(context)!.serviceBranch,
-      ));
-    }
-    if (complainListen.isVisible) {
-      columns.add(ColumnConfig(
-        key: 'complain_listen',
-        width: double.parse(complainListen.width) * baseMultiplier,
-        title: AppLocalizations.of(context)!.commentSection,
-      ));
-    }
+  //   if (sn.isVisible) {
+  //     columns.add(ColumnConfig(
+  //       key: 'sn',
+  //       width: double.parse(sn.width) * baseMultiplier,
+  //       title: AppLocalizations.of(context)!.idNo,
+  //     ));
+  //   }
+  //   if (serviceTypename.isVisible) {
+  //     columns.add(ColumnConfig(
+  //       key: 'service_typename',
+  //       width: double.parse(serviceTypename.width) * baseMultiplier,
+  //       title: AppLocalizations.of(context)!.serviceType,
+  //     ));
+  //   }
+  //   if (serviceRecdetail.isVisible) {
+  //     columns.add(ColumnConfig(
+  //       key: 'service_recdetail',
+  //       width: double.parse(serviceRecdetail.width) * baseMultiplier,
+  //       title: AppLocalizations.of(context)!.serviceRequirement,
+  //     ));
+  //   }
+  //   if (fee.isVisible) {
+  //     columns.add(ColumnConfig(
+  //       key: 'fee',
+  //       width: double.parse(fee.width) * baseMultiplier,
+  //       title: AppLocalizations.of(context)!.price,
+  //     ));
+  //   }
+  //   if (time.isVisible) {
+  //     columns.add(ColumnConfig(
+  //       key: 'time',
+  //       width: double.parse(time.width) * baseMultiplier,
+  //       title: AppLocalizations.of(context)!.time,
+  //     ));
+  //   }
+  //   if (serviceProvider.isVisible) {
+  //     columns.add(ColumnConfig(
+  //       key: 'service_provider',
+  //       width: double.parse(serviceProvider.width) * baseMultiplier,
+  //       title: AppLocalizations.of(context)!.serviceBranch,
+  //     ));
+  //   }
+  //   if (complainListen.isVisible) {
+  //     columns.add(ColumnConfig(
+  //       key: 'complain_listen',
+  //       width: double.parse(complainListen.width) * baseMultiplier,
+  //       title: AppLocalizations.of(context)!.commentSection,
+  //     ));
+  //   }
 
-    return columns;
+  //   return columns;
+  // }
+List<ColumnConfig> getVisibleColumns(bool isPortrait, BuildContext context) {
+  // Screen width bata total available width calculate garoo
+  final screenWidth = MediaQuery.of(context).size.width;
+  
+  // Landscape ma right side team card (180px) + padding (40px) hataoo
+  // Portrait ma full width - padding (32px)
+  final availableWidth = isPortrait
+      ? screenWidth - 32
+      : screenWidth - 180 - 40;
+
+  // Total "parts" count garoo (visible columns ko width sum)
+  double totalParts = 0;
+  if (sn.isVisible) totalParts += double.parse(sn.width);
+  if (serviceTypename.isVisible) totalParts += double.parse(serviceTypename.width);
+  if (serviceRecdetail.isVisible) totalParts += double.parse(serviceRecdetail.width);
+  if (fee.isVisible) totalParts += double.parse(fee.width);
+  if (time.isVisible) totalParts += double.parse(time.width);
+  if (serviceProvider.isVisible) totalParts += double.parse(serviceProvider.width);
+  if (complainListen.isVisible) totalParts += double.parse(complainListen.width);
+
+  // Per-part pixel width calculate garoo
+  final double pixelPerPart = totalParts > 0 ? availableWidth / totalParts : 10;
+
+  List<ColumnConfig> columns = [];
+
+  if (sn.isVisible) {
+    columns.add(ColumnConfig(
+      key: 'sn',
+      width: double.parse(sn.width) * pixelPerPart,
+      title: AppLocalizations.of(context)!.idNo,
+    ));
+  }
+  if (serviceTypename.isVisible) {
+    columns.add(ColumnConfig(
+      key: 'service_typename',
+      width: double.parse(serviceTypename.width) * pixelPerPart,
+      title: AppLocalizations.of(context)!.serviceType,
+    ));
+  }
+  if (serviceRecdetail.isVisible) {
+    columns.add(ColumnConfig(
+      key: 'service_recdetail',
+      width: double.parse(serviceRecdetail.width) * pixelPerPart,
+      title: AppLocalizations.of(context)!.serviceRequirement,
+    ));
+  }
+  if (fee.isVisible) {
+    columns.add(ColumnConfig(
+      key: 'fee',
+      width: double.parse(fee.width) * pixelPerPart,
+      title: AppLocalizations.of(context)!.price,
+    ));
+  }
+  if (time.isVisible) {
+    columns.add(ColumnConfig(
+      key: 'time',
+      width: double.parse(time.width) * pixelPerPart,
+      title: AppLocalizations.of(context)!.time,
+    ));
+  }
+  if (serviceProvider.isVisible) {
+    columns.add(ColumnConfig(
+      key: 'service_provider',
+      width: double.parse(serviceProvider.width) * pixelPerPart,
+      title: AppLocalizations.of(context)!.serviceBranch,
+    ));
+  }
+  if (complainListen.isVisible) {
+    columns.add(ColumnConfig(
+      key: 'complain_listen',
+      width: double.parse(complainListen.width) * pixelPerPart,
+      title: AppLocalizations.of(context)!.commentSection,
+    ));
   }
 
+  return columns;
+}
 
 }  
 
@@ -343,7 +420,8 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
                 children: [
                   // RED HEADER
                   Container(
-                    height: isPortrait ? 58 : 52,
+                  //  height: isPortrait ? 58 : 52,
+                   height: isPortrait ? 44 : 38,
                     color: const Color(0xFFC40000),
                     child: SingleChildScrollView(
                       controller: _headerController,
@@ -360,16 +438,28 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
                                 i.isEven
                                     ? const Color(0xFFE45C53)
                                     : const Color(0xFFC40000),
+                            // child: Text(
+                            //   column.title,
+                            //   style: const TextStyle(
+                            //     color: Colors.white,
+                            //     fontWeight: FontWeight.bold,
+                            //     fontSize: 14,
+                            //   ),
+                            //   textAlign: TextAlign.center,
+                            //   softWrap: true,
+                            // ),
                             child: Text(
-                              column.title,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                              ),
-                              textAlign: TextAlign.center,
-                              softWrap: true,
-                            ),
+  column.title,
+  style: TextStyle(
+    color: Colors.white,
+    fontWeight: FontWeight.bold,
+    fontSize: isPortrait ? 12 : 11, // ✅ responsive font
+  ),
+  textAlign: TextAlign.center,
+  softWrap: true,
+  maxLines: 2,
+  overflow: TextOverflow.ellipsis,
+),
                           );
                         }),
                       ),
@@ -429,24 +519,6 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
               ),
             ),
 
-            // TEAM CARDS SECTION
-            // if (widget.teams.isNotEmpty)
-            //   Container(
-            //     height: isPortrait ? 200 : 180,
-            //     color: Colors.white,
-            //     child: ListView.builder(
-            //       scrollDirection: Axis.horizontal,
-            //       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            //       itemCount: widget.teams.length,
-            //       itemBuilder: (context, index) {
-            //         final team = widget.teams[index];
-            //         return Padding(
-            //           padding: const EdgeInsets.only(right: 16),
-            //           child: _buildTeamCard(team),
-            //         );
-            //       },
-            //     ),
-            //   ),
           ],
         );
       },

@@ -126,6 +126,8 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
               builder: (context, orientation) {
                 return Scaffold(
                   appBar: AppBar(
+                    // toolbarHeight: 40, 
+                    toolbarHeight: 32,
                     leading: IconButton(
                       icon: const Icon(Icons.close, color: Colors.white),
                       onPressed: () {
@@ -139,6 +141,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: Responsive.fontSize(context, 16, 20),
+                      //fontSize: Responsive.fontSize(context, 14, 18),
                       ),
                     ),
                     backgroundColor: appBarBg,
@@ -150,7 +153,9 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                       children: [
                         Container(
                           color: headerBg,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                         // padding: const EdgeInsets.symmetric(vertical: 16),
+                         // padding: const EdgeInsets.symmetric(vertical: 4),
+                         padding: const EdgeInsets.symmetric(vertical: 2),
                           child: Row(children: _buildHeaderRow(context)),
                         ),
                         Expanded(
@@ -192,32 +197,43 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
             ? [1, 2, 3, 2, 2, 2, 2]
             : [1, 2, 4, 2, 2, 2, 2];
 
-    return headers.asMap().entries.map((e) {
-      return Expanded(
-        flex: flexes[e.key],
-        child: Text(
-          e.value,
-          style: TextStyle(
-            color: textHeader,
-            fontWeight: FontWeight.bold,
-            fontSize: Responsive.fontSize(context, 13, 16),
-          ),
-          textAlign: TextAlign.center,
+    // return headers.asMap().entries.map((e) {
+    //   return Expanded(
+    //     flex: flexes[e.key],
+    //     child: Text(
+    //       e.value,
+    //       style: TextStyle(
+    //         color: textHeader,
+    //         fontWeight: FontWeight.bold,
+    //         fontSize: Responsive.fontSize(context, 13, 16),
+    //       ),
+    //       textAlign: TextAlign.center,
+    //     ),
+    //   );
+    // }).toList();
+return headers.asMap().entries.map((e) {
+  return Expanded(
+    flex: flexes[e.key],
+    child: Container(
+      alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+      child: Text(
+        e.value,
+        style: TextStyle(
+          color: textHeader,
+          fontWeight: FontWeight.bold,
+          fontSize: Responsive.fontSize(context, 12, 14),
         ),
-      );
-    }).toList();
+        textAlign: TextAlign.center,
+      ),
+    ),
+  );
+}).toList();
+    
   }
 
-  // List<Widget> _buildDataRow(BuildContext context, Service s) {
-  //   final values = [
-  //     s.code,
-  //     s.serviceTypeName,
-  //     s.serviceRecDetail,
-  //     s.fee,
-  //     s.time,
-  //     s.serviceProvider,
-  //     s.complainListen,
-  //   ];
+  
+ 
 
   List<Widget> _buildDataRow(BuildContext context, Service s) {
   // HTML strip helper
@@ -233,7 +249,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
   final values = [
     s.code,
     s.serviceTypeName,
-    stripHtml(s.serviceRecDetail), // ✅ HTML hatayo
+    stripHtml(s.serviceRecDetail), 
     s.fee,
     s.time,
     s.serviceProvider,
@@ -250,14 +266,19 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
         child: Text(
           e.value,
           style: TextStyle(
-            fontSize: Responsive.fontSize(context, 13, 15),
+           fontSize: Responsive.fontSize(context, 13, 15),
+          // fontSize: Responsive.fontSize(context, 12, 14),
             color: textRow,
           ),
           softWrap: true,
         ),
       );
     }).toList();
+
+    
   }
+
+  
 
   
 
@@ -322,6 +343,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
           ),
           contentPadding: EdgeInsets.symmetric(
             horizontal: Responsive.isTV(context) ? 16 : 10,
+
             vertical: Responsive.isTV(context) ? 10 : 6,
           ),
           border: InputBorder.none,
