@@ -12,23 +12,9 @@ class HeaderSection extends StatelessWidget {
         MediaQuery.of(context).orientation == Orientation.portrait;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    // // ✅ REDUCED sizes for portrait mode
-    // final double logoHeight = isPortrait ? 60 : 55;
-    // final double flagHeight = isPortrait ? 45 : 40;
-    // final double contactBoxHeight = isPortrait ? 55 : 60;
-    // final double fontSizeMain = isPortrait ? 15 : 16;
-    // final double fontSizeSub = isPortrait ? 12 : 14;
- //nal double logoHeight = isPortrait ? 45 : 90;
-//final double flagHeight = isPortrait ? 32 : 38;
-//final double Height = isPortrait ? 32 : contactBoxHeight;
-//nal double contactBoxHeight = isPortrait ? 42 : 100;
-//nal double flagHeight = isPortrait ? 32 : contactBoxHeight; // ✅ अब use गर्न मिल्छ
-//nal double contactBoxHeight = isPortrait ? 42 : 52;
-// final double fontSizeMain = isPortrait ? 13 : 15;
-// final double fontSizeSub = isPortrait ? 10 : 12;
-final double contactBoxHeight = isPortrait ? 42 : 100; // ← पहिले define
-final double logoHeight = isPortrait ? 45 : contactBoxHeight; // ← same height
-final double flagHeight = isPortrait ? 32 : contactBoxHeight; // ← same height
+final double contactBoxHeight = isPortrait ? 42 : 100; 
+final double logoHeight = isPortrait ? 45 : contactBoxHeight; 
+final double flagHeight = isPortrait ? 32 : contactBoxHeight; 
 
 final double fontSizeMain = isPortrait ? 16 : 42;
 final double fontSizeSub = isPortrait ? 13 : 32;
@@ -37,16 +23,15 @@ final double fontSizeSub = isPortrait ? 13 : 32;
       width: double.infinity,
       color: Colors.white,
       padding: EdgeInsets.only(
-       // top: 40,
-        // top: isPortrait ? 30 : 0,
+       
         top: isPortrait ? 6 : 4,
         left: screenWidth < 600 ? 8 : 16,
         right: screenWidth < 600 ? 8 : 16,
-      //  bottom: isPortrait ? 2 : 4, 
+   
       bottom: isPortrait ? 1 : 2,
       ),
       child: Row(
-      //  crossAxisAlignment: CrossAxisAlignment.center,
+    
       crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           orgInfo['logo'] != null && orgInfo['logo'].toString().isNotEmpty
@@ -138,7 +123,7 @@ final double fontSizeSub = isPortrait ? 13 : 32;
 
                 Container(
   
- // padding: EdgeInsets.all(isPortrait ? 4 : 6),
+ 
  padding: EdgeInsets.all(isPortrait ? 4 : 14),
   width: isPortrait ? null : screenWidth * 0.20,
 
@@ -215,10 +200,7 @@ final double fontSizeSub = isPortrait ? 13 : 32;
 
           CircleAvatar(
   backgroundColor: bg,
-  // radius: isPortrait ? 9 : 12,
-  // child: Icon(icon, color: Colors.white, size: isPortrait ? 9 : 12),
-//   radius: isPortrait ? 9 : 15,
-// child: Icon(icon, color: Colors.white, size: isPortrait ? 9 : 15),
+  
 radius: isPortrait ? 9 : 30,
 child: Icon(icon, color: Colors.white, size: isPortrait ? 9 : 28)
 ),
@@ -227,9 +209,6 @@ Text(
   text,
   style: TextStyle(
     color: color,
- //   fontSize: isPortrait ? 10 : 12,   // ✅ FIXED
- //ntSize: isPortrait ? 10 : 16,
- //ntSize: isPortrait ? 10 : 34,
  fontSize: fontSize,
   ),
 ),

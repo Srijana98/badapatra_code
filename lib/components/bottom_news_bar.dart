@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -66,6 +66,7 @@ class BottomNewsBar extends StatelessWidget {
               ],
             ),
           ),
+
           
           // QR Code section on the right
   //         if (qrUrl != null && qrUrl!.isNotEmpty)

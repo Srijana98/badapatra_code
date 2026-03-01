@@ -60,65 +60,7 @@ class BadapatraDisplayHeading {
     );
   }
 
-  // Get list of visible columns with their data using localization
-  // List<ColumnConfig> getVisibleColumns(bool isPortrait, BuildContext context) {
-  //   final baseMultiplier = isPortrait ? 16.0 : 14.5;
-  // List<ColumnConfig> getVisibleColumns(bool isPortrait, BuildContext context) {
-  // final baseMultiplier = isPortrait ? 11.0 : 10.0; // ✅ reduced from 16/14.5
-  //   List<ColumnConfig> columns = [];
-
-  //   if (sn.isVisible) {
-  //     columns.add(ColumnConfig(
-  //       key: 'sn',
-  //       width: double.parse(sn.width) * baseMultiplier,
-  //       title: AppLocalizations.of(context)!.idNo,
-  //     ));
-  //   }
-  //   if (serviceTypename.isVisible) {
-  //     columns.add(ColumnConfig(
-  //       key: 'service_typename',
-  //       width: double.parse(serviceTypename.width) * baseMultiplier,
-  //       title: AppLocalizations.of(context)!.serviceType,
-  //     ));
-  //   }
-  //   if (serviceRecdetail.isVisible) {
-  //     columns.add(ColumnConfig(
-  //       key: 'service_recdetail',
-  //       width: double.parse(serviceRecdetail.width) * baseMultiplier,
-  //       title: AppLocalizations.of(context)!.serviceRequirement,
-  //     ));
-  //   }
-  //   if (fee.isVisible) {
-  //     columns.add(ColumnConfig(
-  //       key: 'fee',
-  //       width: double.parse(fee.width) * baseMultiplier,
-  //       title: AppLocalizations.of(context)!.price,
-  //     ));
-  //   }
-  //   if (time.isVisible) {
-  //     columns.add(ColumnConfig(
-  //       key: 'time',
-  //       width: double.parse(time.width) * baseMultiplier,
-  //       title: AppLocalizations.of(context)!.time,
-  //     ));
-  //   }
-  //   if (serviceProvider.isVisible) {
-  //     columns.add(ColumnConfig(
-  //       key: 'service_provider',
-  //       width: double.parse(serviceProvider.width) * baseMultiplier,
-  //       title: AppLocalizations.of(context)!.serviceBranch,
-  //     ));
-  //   }
-  //   if (complainListen.isVisible) {
-  //     columns.add(ColumnConfig(
-  //       key: 'complain_listen',
-  //       width: double.parse(complainListen.width) * baseMultiplier,
-  //       title: AppLocalizations.of(context)!.commentSection,
-  //     ));
-  //   }
-
-  //   return columns;
-  // }
+  
 List<ColumnConfig> getVisibleColumns(bool isPortrait, BuildContext context) {
   // Screen width bata total available width calculate garoo
   final screenWidth = MediaQuery.of(context).size.width;
@@ -438,16 +380,7 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
                                 i.isEven
                                     ? const Color(0xFFE45C53)
                                     : const Color(0xFFC40000),
-                            // child: Text(
-                            //   column.title,
-                            //   style: const TextStyle(
-                            //     color: Colors.white,
-                            //     fontWeight: FontWeight.bold,
-                            //     fontSize: 14,
-                            //   ),
-                            //   textAlign: TextAlign.center,
-                            //   softWrap: true,
-                            // ),
+                           
                             child: Text(
   column.title,
   style: TextStyle(
@@ -617,55 +550,7 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
     );
   }
 
-  
-// AFTER:
-// Widget _cell(double width, String text, Color color, {bool bold = false}) {
-//   final bool isHtml = text.contains('<') && text.contains('>');
 
-//   return SizedBox(
-//     width: width,
-//     child: isHtml
-//         ? Html(
-//             data: text,
-//             style: {
-//               "body": Style(
-//                 color: color,
-//                 fontSize: FontSize(13.0),
-//                 margin: Margins.zero,
-//                 padding: HtmlPaddings.zero,
-//               ),
-//               "ul": Style(
-//                 // ✅ Left padding diyera bullet visible huncha
-//                 margin: Margins.only(left: 0),
-//                 padding: HtmlPaddings.only(left: 16),
-//               ),
-//               "li": Style(
-//                 color: color,
-//                 fontSize: FontSize(13.0),
-//                 lineHeight: LineHeight(1.4),
-//                 // ✅ Bullet visible garnu ko lagi
-//                // listStyleType: ListStyleType.disc,
-//                  listStyleType: ListStyleType.none,
-//               ),
-//               "p": Style(
-//                 margin: Margins.zero,
-//                 padding: HtmlPaddings.zero,
-//               ),
-//             },
-//           )
-//         : Text(
-//             text,
-//             style: TextStyle(
-//               color: color,
-//               fontSize: 13.8,
-//               height: 1.5,
-//               fontWeight: bold ? FontWeight.bold : FontWeight.normal,
-//             ),
-//             softWrap: true,
-//             overflow: TextOverflow.visible,
-//           ),
-//   );
-// }
 // REPLACE WITH:
 Widget _cell(double width, String text, Color color, {bool bold = false}) {
   // HTML tags strip garera clean text matra nikaal
