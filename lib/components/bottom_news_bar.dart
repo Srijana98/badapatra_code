@@ -1,10 +1,11 @@
-import'package:flutter/material.dart';
+
+import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class BottomNewsBar extends StatelessWidget {
   final List<dynamic> newsItems;
-  final String rssType;
+  final String rssType;  
   final String? qrUrl;
 
   const BottomNewsBar({
@@ -21,135 +22,153 @@ class BottomNewsBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
-    return Container(
-      //ight: 35,
-        height: isLandscape ? 70.0 : 35.0,
-      width: double.infinity,
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
     
-      child: Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
+    // return Container(
+    //   height: 35, // Fixed height to match TopNewsBar
+    //   width: double.infinity,
+    //   color: const Color(0xFFCD0711), 
+    //   child: Row(
+    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //     children: [
+    //       // News bar section
+    //       Expanded(
+    //         child: Stack(
+    //           children: [
+    //             CustomPaint(
+    //               painter: TaperedRedBackgroundPainter(),
+    //               size: const Size(double.infinity, 35),
+    //             ),
+    //             CustomPaint(
+    //               painter: WhiteTriangleLabelPainter(),
+    //               size: const Size(120, 35),
+    //             ),
+    //             Positioned.fill(
+    //               left: 95,
+    //               child: Padding(
+    //                 padding: const EdgeInsets.symmetric(horizontal: 10),
+    //                 child: Marquee(
+    //                   text: _buildNewsText(),
+    //                   style: const TextStyle(
+    //                     color: Colors.white,
+    //                     fontSize: 14,
+    //                     fontWeight: FontWeight.w500,
+    //                     height: 1.3,
+    //                   ),
+    //                   velocity: 30,
+    //                   blankSpace: 120,
+    //                   pauseAfterRound: const Duration(seconds: 1),
+    //                 ),
+    //               ),
+    //             ),
+    //           ],
+    //         ),
+    //       ),
+          
+    //       if (qrUrl != null && qrUrl!.isNotEmpty)
+    //         Builder(
+    //           builder: (context) {
+    //             final screenWidth = MediaQuery.of(context).size.width;
+    //             final qrSize = 35.0; // Match the container height
+                
+    //             return Container(
+    //               width: qrSize,
+    //               height: qrSize,
+    //               color: const Color(0xFFCD0711), 
+    //               alignment: Alignment.center,
+    //               child: QrImageView(
+    //                 data: qrUrl!,
+    //                 version: QrVersions.auto,
+    //                 size: qrSize - 4, // Slightly smaller to fit within container
+    //                 backgroundColor: Colors.white, 
+    //                 eyeStyle: const QrEyeStyle(
+    //                   eyeShape: QrEyeShape.circle,
+    //                   color: Colors.black,
+    //                 ),
+    //                 dataModuleStyle: const QrDataModuleStyle(
+    //                   dataModuleShape: QrDataModuleShape.circle,
+    //                   color: Colors.black,
+    //                 ),
+    //                 padding: const EdgeInsets.all(2),
+    //                 errorStateBuilder: (context, error) {
+    //                   return const Icon(
+    //                     Icons.qr_code,
+    //                     size: 30,
+    //                     color: Colors.black,
+    //                   );
+    //                 },
+    //               ),
+    //             );
+    //           },
+    //         ),
+    //     ],
+    //   ),
+    // );
+    return SizedBox(
+  height: 35,
+  width: double.infinity,
+  child: Stack(
+    clipBehavior: Clip.none,
+    children: [
 
-          // News bar section
-          Expanded(
-            child: Stack(
-              children: [
-                CustomPaint(
-                  painter: TaperedRedBackgroundPainter(),
-                  size: const Size(double.infinity, 35),
-                ),
-                CustomPaint(
-                  painter: WhiteTriangleLabelPainter(),
-                  size: const Size(120, 35),
-                ),
-                Positioned.fill(
-                  left: 95,
-                  child: Padding(
-                    //padding: const EdgeInsets.symmetric(horizontal: 15),
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Marquee(
-                      text: _buildNewsText(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        //fontWeight: FontWeight.bold,
-                         fontWeight: FontWeight.w500,
-                        height: 1.3,
+      // 🔴 RED NEWS BAR
+      Container(
+        height: 35,
+        width: double.infinity,
+        color: const Color(0xFFCD0711),
+        child: Row(
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  CustomPaint(
+                    painter: TaperedRedBackgroundPainter(),
+                    size: const Size(double.infinity, 35),
+                  ),
+                  CustomPaint(
+                    painter: WhiteTriangleLabelPainter(),
+                    size: const Size(120, 35),
+                  ),
+                  Positioned.fill(
+                    left: 95,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Marquee(
+                        text: _buildNewsText(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        velocity: 30,
+                        blankSpace: 120,
                       ),
-                      velocity: 30,
-                      blankSpace: 120,
-                      pauseAfterRound: const Duration(seconds: 1),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-
-          
-          // QR Code section on the right
-  //         if (qrUrl != null && qrUrl!.isNotEmpty)
-  //           Container(
-  //             width: 50,
-  //             height: 50,
-  //             color: Colors.white,
-         
-             
-  //           child  :QrImageView(
-  // data: qrUrl!,
-  // version: QrVersions.auto,
-  // size: 60,
-  if (qrUrl != null && qrUrl!.isNotEmpty)
-  Builder(
-    builder: (context) {
-     //inal isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
-      // //nal qrSize = isLandscape ? 80.0 : 50.0;
-      // final qrSize = isLandscape ? screenWidth * 0.06 : 50.0; 
-      // return Container(
-      //   width: qrSize,
-      //   height: qrSize,
-      //   color: Colors.white,
-      //   child: QrImageView(
-      //     data: qrUrl!,
-      //     version: QrVersions.auto,
-      //     size: isLandscape ? 90.0 : 60.0,
-      // AFTER:
-// final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
-// final screenWidth = MediaQuery.of(context).size.width;
-// final qrSize = isLandscape ? screenWidth * 0.06 : 50.0; // ← screen अनुसार
-// return Container(
-//   width: qrSize,
-//   height: qrSize,
-//   color: Colors.white,
-//   child: QrImageView(
-//     data: qrUrl!,
-//     version: QrVersions.auto,
-//     size: qrSize, // ← same size
-
-
-// AFTER:
-final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
-final screenWidth = MediaQuery.of(context).size.width;
-final qrSize = isLandscape ? screenWidth * 0.08 : 50.0; // ← 0.06 → 0.08
-return Container(
-  width: qrSize,
-  height: qrSize,
-  color: Colors.white,
-  alignment: Alignment.centerRight, // ← right align
-  child: QrImageView(
-    data: qrUrl!,
-    version: QrVersions.auto,
-    size: qrSize,
-  backgroundColor: Colors.white,
-
-  eyeStyle: const QrEyeStyle(
-    eyeShape: QrEyeShape.circle,
-    color: Colors.black,
-  ),
-
- 
-  dataModuleStyle: const QrDataModuleStyle(
-    dataModuleShape: QrDataModuleShape.circle,
-    color: Colors.black,
-  ),
-
-  padding: const EdgeInsets.all(2),
-
-  errorStateBuilder: (context, error) {
-    return const Icon(
-      Icons.qr_code,
-      size: 50,
-      color: Colors.black,
-    );
-  },
-),
-      );
-    }
-            ),
-        ],
+          ],
+        ),
       ),
-    );
+
+      // 🔳 BIG QR (OVERFLOW)
+      if (qrUrl != null && qrUrl!.isNotEmpty)
+        Positioned(
+          // right: 8,
+          // bottom: -5, // 👈 move outside bottom
+           right: 0,
+           top: -15, 
+          child: QrImageView(
+            data: qrUrl!,
+            version: QrVersions.auto,
+            size: 80, // 👈 BIG SIZE
+            backgroundColor: Colors.white,
+          ),
+        ),
+    ],
+  ),
+);
   }
 }
 
@@ -212,3 +231,6 @@ class WhiteTriangleLabelPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
+
+
+

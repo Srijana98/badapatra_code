@@ -62,16 +62,14 @@ class BadapatraDisplayHeading {
 
   
 List<ColumnConfig> getVisibleColumns(bool isPortrait, BuildContext context) {
-  // Screen width bata total available width calculate garoo
   final screenWidth = MediaQuery.of(context).size.width;
   
-  // Landscape ma right side team card (180px) + padding (40px) hataoo
-  // Portrait ma full width - padding (32px)
+
   final availableWidth = isPortrait
       ? screenWidth - 32
       : screenWidth - 180 - 40;
 
-  // Total "parts" count garoo (visible columns ko width sum)
+ 
   double totalParts = 0;
   if (sn.isVisible) totalParts += double.parse(sn.width);
   if (serviceTypename.isVisible) totalParts += double.parse(serviceTypename.width);
@@ -81,7 +79,7 @@ List<ColumnConfig> getVisibleColumns(bool isPortrait, BuildContext context) {
   if (serviceProvider.isVisible) totalParts += double.parse(serviceProvider.width);
   if (complainListen.isVisible) totalParts += double.parse(complainListen.width);
 
-  // Per-part pixel width calculate garoo
+  
   final double pixelPerPart = totalParts > 0 ? availableWidth / totalParts : 10;
 
   List<ColumnConfig> columns = [];
@@ -151,6 +149,18 @@ class ColumnConfig {
     required this.width,
     required this.title,
   });
+}
+
+
+String toNepaliNumber(String input) {
+  const englishDigits = ['0','1','2','3','4','5','6','7','8','9'];
+  const nepaliDigits = ['०','१','२','३','४','५','६','७','८','९'];
+
+  String output = input;
+  for (int i = 0; i < englishDigits.length; i++) {
+    output = output.replaceAll(englishDigits[i], nepaliDigits[i]);
+  }
+  return output;
 }
 
 class WaraBadapatraTable extends StatefulWidget {
@@ -282,7 +292,7 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
   String _getFieldValue(Service service, String fieldKey) {
     switch (fieldKey) {
       case 'sn':
-        return service.code;
+      return toNepaliNumber(service.code);
       case 'service_typename':
         return service.serviceTypeName;
       case 'service_recdetail':
@@ -305,12 +315,12 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
 
-    // Get visible columns from display heading
+    
     final visibleColumns = widget.displayHeading?.getVisibleColumns(isPortrait, context) ?? [];
     final double totalTableWidth =
     visibleColumns.fold(0, (sum, col) => sum + col.width);
 
-    // If no display heading provided, show error
+  
     if (visibleColumns.isEmpty) {
       return const Center(
         child: Text(
@@ -340,7 +350,6 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
                     .toList();
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          // Reset horizontal scroll to start position (left side)
           if (_headerController.hasClients) {
             _headerController.jumpTo(0);
           }
@@ -362,7 +371,6 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
                 children: [
                   // RED HEADER
                   Container(
-                  //  height: isPortrait ? 58 : 52,
                    height: isPortrait ? 44 : 38,
                     color: const Color(0xFFC40000),
                     child: SingleChildScrollView(
@@ -386,7 +394,7 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
   style: TextStyle(
     color: Colors.white,
     fontWeight: FontWeight.bold,
-    fontSize: isPortrait ? 12 : 11, // ✅ responsive font
+    fontSize: isPortrait ? 12 : 11, 
   ),
   textAlign: TextAlign.center,
   softWrap: true,
@@ -553,7 +561,6 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
 
 // REPLACE WITH:
 Widget _cell(double width, String text, Color color, {bool bold = false}) {
-  // HTML tags strip garera clean text matra nikaal
   final String cleanText = text
       .replaceAll(RegExp(r'<[^>]*>'), '') 
       .replaceAll('&nbsp;', ' ')          

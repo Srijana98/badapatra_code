@@ -2,17 +2,14 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import 'components/bottom_news_bar.dart';
 import 'components/header_section.dart';
 import 'components/sidebar_widget.dart';
 import 'components/top_news_bar.dart';
 import 'components/search_bar.dart' hide BottomNewsBar;
-
 import 'wara_badapatra_table.dart';
 import 'team_page.dart';
 import 'models/service.dart';
-
 import 'services/pusher_service.dart';
 import 'brodcast_page.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -28,7 +25,6 @@ class FinalHomePage extends StatefulWidget {
   final Map<String, dynamic> loginData;
   final String? token;
   final List<dynamic> badapatradata;
-  //final Map<String, dynamic> displayHeading;
   final Map<String, dynamic>? displayHeading;
    final List<dynamic> gallery; 
 
@@ -42,7 +38,6 @@ class FinalHomePage extends StatefulWidget {
     required this.loginData,
     this.token,
     required this.badapatradata,
-    //required this.displayHeading,
     this.displayHeading,
      required this.gallery,
   
@@ -87,7 +82,7 @@ void initState() {
   _notices = widget.loginData['notices'] ?? [];
   _galleryItems = List.from(widget.gallery);  
   
-  // Display heading configuration
+  
   print("🔍 Loading display heading configuration...");
   if (widget.displayHeading != null && widget.displayHeading!.isNotEmpty) {
     try {
@@ -335,33 +330,33 @@ void _handleBroadcastEvent(dynamic data) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    return Scaffold(
-      backgroundColor: Colors.grey[50],
-      body: RawKeyboardListener(
-        focusNode: _keyboardFocusNode,
-        autofocus: true,
-        onKey: (event) {
-          if (event.logicalKey.keyLabel == '*') _selectedService = null;
-        },
-        child: Column(
-          children: [
-            HeaderSection(orgInfo: orgInfo),
-             TopNewsBar(notices: _notices),
-            const SizedBox(height: 8),
-            Expanded(child: _buildMainContent()),
-          ],
+
+
+return Scaffold(
+  backgroundColor: Colors.grey[50],
+  body: RawKeyboardListener(
+    focusNode: _keyboardFocusNode,
+    autofocus: true,
+    onKey: (event) {
+      if (event.logicalKey.keyLabel == '*') _selectedService = null;
+    },
+    child: Column(
+      children: [
+        HeaderSection(orgInfo: orgInfo),
+        TopNewsBar(notices: _notices),
+        const SizedBox(height: 8),
+        Expanded(child: _buildMainContent()),
+        // Add BottomNewsBar directly in the Column
+        BottomNewsBar(
+          newsItems: rssItems,
+          rssType: widget.loginData['rss_type'] ?? 'News',
+          qrUrl: widget.loginData['qr_url'],
         ),
-      ),
- 
-
-
-
-  bottomNavigationBar: BottomNewsBar(
-  newsItems: rssItems,
-  rssType: widget.loginData['rss_type'] ?? 'News',
-  qrUrl: widget.loginData['qr_url'],
-),
-    );
+      ],
+    ),
+  ),
+  
+);
   }
 
   
@@ -379,11 +374,9 @@ Widget _buildMainContent() {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               
-              // ADD THIS NEW BLOCK:
+              
 Expanded(
- // flex: 85,
-  //flex: 78,
-  //flex: 70,
+ 
    flex: 60,
   child: Padding(
     padding: const EdgeInsets.only(left: 16, right: 8),
