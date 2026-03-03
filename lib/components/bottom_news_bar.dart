@@ -24,86 +24,6 @@ class BottomNewsBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
     
-    // return Container(
-    //   height: 35, // Fixed height to match TopNewsBar
-    //   width: double.infinity,
-    //   color: const Color(0xFFCD0711), 
-    //   child: Row(
-    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //     children: [
-    //       // News bar section
-    //       Expanded(
-    //         child: Stack(
-    //           children: [
-    //             CustomPaint(
-    //               painter: TaperedRedBackgroundPainter(),
-    //               size: const Size(double.infinity, 35),
-    //             ),
-    //             CustomPaint(
-    //               painter: WhiteTriangleLabelPainter(),
-    //               size: const Size(120, 35),
-    //             ),
-    //             Positioned.fill(
-    //               left: 95,
-    //               child: Padding(
-    //                 padding: const EdgeInsets.symmetric(horizontal: 10),
-    //                 child: Marquee(
-    //                   text: _buildNewsText(),
-    //                   style: const TextStyle(
-    //                     color: Colors.white,
-    //                     fontSize: 14,
-    //                     fontWeight: FontWeight.w500,
-    //                     height: 1.3,
-    //                   ),
-    //                   velocity: 30,
-    //                   blankSpace: 120,
-    //                   pauseAfterRound: const Duration(seconds: 1),
-    //                 ),
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-          
-    //       if (qrUrl != null && qrUrl!.isNotEmpty)
-    //         Builder(
-    //           builder: (context) {
-    //             final screenWidth = MediaQuery.of(context).size.width;
-    //             final qrSize = 35.0; // Match the container height
-                
-    //             return Container(
-    //               width: qrSize,
-    //               height: qrSize,
-    //               color: const Color(0xFFCD0711), 
-    //               alignment: Alignment.center,
-    //               child: QrImageView(
-    //                 data: qrUrl!,
-    //                 version: QrVersions.auto,
-    //                 size: qrSize - 4, // Slightly smaller to fit within container
-    //                 backgroundColor: Colors.white, 
-    //                 eyeStyle: const QrEyeStyle(
-    //                   eyeShape: QrEyeShape.circle,
-    //                   color: Colors.black,
-    //                 ),
-    //                 dataModuleStyle: const QrDataModuleStyle(
-    //                   dataModuleShape: QrDataModuleShape.circle,
-    //                   color: Colors.black,
-    //                 ),
-    //                 padding: const EdgeInsets.all(2),
-    //                 errorStateBuilder: (context, error) {
-    //                   return const Icon(
-    //                     Icons.qr_code,
-    //                     size: 30,
-    //                     color: Colors.black,
-    //                   );
-    //                 },
-    //               ),
-    //             );
-    //           },
-    //         ),
-    //     ],
-    //   ),
-    // );
     return SizedBox(
   height: 35,
   width: double.infinity,
@@ -155,16 +75,25 @@ class BottomNewsBar extends StatelessWidget {
       // 🔳 BIG QR (OVERFLOW)
       if (qrUrl != null && qrUrl!.isNotEmpty)
         Positioned(
-          // right: 8,
-          // bottom: -5, // 👈 move outside bottom
            right: 0,
-           top: -15, 
-          child: QrImageView(
-            data: qrUrl!,
-            version: QrVersions.auto,
-            size: 80, // 👈 BIG SIZE
-            backgroundColor: Colors.white,
-          ),
+           bottom: 0,
+          child:
+
+          Positioned(
+  right: 0,
+  bottom: 0,
+  child: SizedBox(
+    width: 70,
+    height: 70,
+    child: QrImageView(
+      data: qrUrl!,
+      version: QrVersions.auto,
+      gapless: true, 
+      backgroundColor: Colors.white, 
+      errorCorrectionLevel: QrErrorCorrectLevel.H,
+    ),
+  ),
+),
         ),
     ],
   ),
