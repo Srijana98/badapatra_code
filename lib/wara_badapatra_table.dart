@@ -421,12 +421,18 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
                                 final service = e.value;
                                 final index = e.key;
                                 final isEven = index % 2 == 0;
-                                final bg =
-                                    isEven
-                                        ? const Color(0xFFF9D7D7)
-                                        : const Color(0xFF006699);
-                                final textColor =
-                                    isEven ? const Color(0xFF006699) : Colors.white;
+                                // final bg =
+                                //     isEven
+                                //         ? const Color(0xFFF9D7D7)
+                                //         : const Color(0xFF006699);
+                                // final textColor =
+                                //     isEven ? const Color(0xFF006699) : Colors.white;
+
+                                final bg = isEven
+    ? const Color(0xFFF9D7D7)   
+    : const Color(0xFF006699);   
+final textColor =
+    isEven ? const Color(0xFF2056AE) : Colors.white;
 
                                 return InkWell(
                                   onTap: () => widget.onCodeTap?.call(service),
@@ -576,7 +582,8 @@ Widget _cell(double width, String text, Color color, {bool bold = false}) {
         color: color,
         fontSize: 13.8,
         height: 1.5,
-        fontWeight: bold ? FontWeight.bold : FontWeight.normal,
+      //  fontWeight: bold ? FontWeight.bold : FontWeight.normal,
+      fontWeight: bold ? FontWeight.bold : FontWeight.w600, 
       ),
       softWrap: true,
       overflow: TextOverflow.visible,
