@@ -420,13 +420,11 @@ Expanded(
 
               if (_teams.isNotEmpty)
   SizedBox(
-      //width: 220,
      width: 220,
     child: Column(
       children: [
         // Team Carousel
         Container(
-          //height: screenHeight * 0.45,
           height: screenHeight * 0.42,
           margin: const EdgeInsets.only(right: 12, top: 1),
           decoration: BoxDecoration(
@@ -442,7 +440,7 @@ Expanded(
         
         const SizedBox(height: 12),
         
-        // Gallery Carousel below Team Carousel
+     
         if (_galleryItems.isNotEmpty)
           Container(
              height: screenHeight * 0.45,
@@ -483,7 +481,7 @@ Expanded(
       Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Left side - Table (takes more space)
+         
           Expanded(
             flex: 60,
             child: Padding(
@@ -505,13 +503,13 @@ Expanded(
           
           const SizedBox(width: 8),
           
-          // Right side - Teams and Gallery
+        
           if (_teams.isNotEmpty)
             Expanded(
               flex: 40,
               child: Column(
                 children: [
-                  // Team Carousel
+                  
                   Container(
                     height: screenHeight * 0.35,
                     margin: const EdgeInsets.only(right: 12),

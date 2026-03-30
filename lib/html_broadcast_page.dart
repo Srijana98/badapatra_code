@@ -27,12 +27,12 @@ class _HtmlBroadcastPageState extends State<HtmlBroadcastPage> {
     print("🎨 Duration: ${widget.duration}");
     print("🎨 OrgId: ${widget.orgId}");
 
-    // Initialize WebView
+
     _webViewController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..loadHtmlString(widget.htmlContent);
 
-    // Auto-close after duration
+  
     Future.delayed(Duration(seconds: widget.duration), () {
       print("⏰ Duration expired, closing HtmlBroadcastPage");
       if (mounted) {

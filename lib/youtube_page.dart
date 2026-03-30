@@ -18,6 +18,7 @@ class GalleryCarousel extends StatefulWidget {
 
 class _GalleryCarouselState extends State<GalleryCarousel> {
   int _currentIndex = 0;
+  
   Timer? _timer;
 
   @override
@@ -39,7 +40,7 @@ class _GalleryCarouselState extends State<GalleryCarousel> {
         setState(() {
           _currentIndex = (_currentIndex + 1) % widget.galleryItems.length;
         });
-        _startAutoSlide(); // Restart timer with new duration
+        _startAutoSlide(); 
       }
     });
   }
@@ -174,9 +175,6 @@ Widget build(BuildContext context) {
 
     return Image.network(
       widget.imageUrl,
-     //eight: 180,
-      //hht: 250,  
-      //ight: 180,
        height: double.infinity,
       width: double.infinity,
       fit: BoxFit.cover,

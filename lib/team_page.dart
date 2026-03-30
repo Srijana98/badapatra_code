@@ -29,7 +29,7 @@ class _TeamCarouselState extends State<TeamCarousel> {
         Expanded(
           child: CarouselSlider(
             options: CarouselOptions(
-              height: double.infinity, // ✅ ADD THIS
+              height: double.infinity, 
               viewportFraction: 1.0,
               autoPlay: true,
               autoPlayInterval: const Duration(seconds: 4),

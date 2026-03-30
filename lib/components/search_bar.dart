@@ -249,8 +249,8 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
     }
 
     final values = [
-      //s.code,
-       toNepaliNumber(s.code), 
+
+     toNepaliNumber(s.code), 
       s.serviceTypeName,
       stripHtml(s.serviceRecDetail),
       s.fee,

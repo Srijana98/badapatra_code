@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       title: 'Nagarik Wada Patra',
       debugShowCheckedModeBanner: false,
 
-      // ✅ ADD THESE LINES FOR LOCALIZATION:
+      
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -59,8 +59,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
 
 
 class AppRestartManager {
