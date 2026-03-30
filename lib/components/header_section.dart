@@ -65,13 +65,14 @@ final double fontSizeSub = isPortrait ? 13 : 32;
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-                if (orgInfo['slogan'] != null &&
-                    orgInfo['slogan'].toString().isNotEmpty)
+                if (orgInfo['header_slogan'] != null &&
+                    orgInfo['header_slogan'].toString().isNotEmpty)
                   Padding(
                    // padding: EdgeInsets.only(bottom: isPortrait ? 1 : 2), 
                    padding: EdgeInsets.only(bottom: 0),
                     child: Text(
-                      orgInfo['slogan'],
+                      //orgInfo['slogan'],
+                       orgInfo['header_slogan'],
                       textAlign: TextAlign.center,
                         maxLines: 1,  // ✅ ADD THIS
                     overflow: TextOverflow.ellipsis, 
@@ -84,7 +85,7 @@ final double fontSizeSub = isPortrait ? 13 : 32;
                     ),
                   ),
                 Text(
-                  orgInfo['orgname'] ?? '',
+                  orgInfo['header_text1'] ?? '',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: const Color(0xFFcd0711),
@@ -93,7 +94,7 @@ final double fontSizeSub = isPortrait ? 13 : 32;
                   ),
                 ),
                 Text(
-                  orgInfo['orgname_np'] ?? '',
+                  orgInfo['header_text2'] ?? '',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: const Color(0xFFcd0711),
@@ -102,7 +103,7 @@ final double fontSizeSub = isPortrait ? 13 : 32;
                   ),
                 ),
                 Text(
-                  orgInfo['orgaddress1'] ?? '',
+                  orgInfo['header_text3'] ?? '',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: const Color(0xFF2056ae),
