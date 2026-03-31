@@ -43,6 +43,8 @@ class MyApp extends StatelessWidget {
       title: 'Nagarik Wada Patra',
       debugShowCheckedModeBanner: false,
 
+     // navigatorObservers: [routeObserver],
+
       
       localizationsDelegates: const [
         AppLocalizations.delegate,

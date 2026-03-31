@@ -11,6 +11,7 @@ class HtmlBroadcastPage extends StatefulWidget {
     required this.htmlContent,
     required this.duration,
     required this.orgId,
+
   });
 
   @override

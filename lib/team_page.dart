@@ -6,6 +6,7 @@ class TeamCarousel extends StatefulWidget {
   final List<dynamic> teams;
   final Map<String, dynamic> orgInfo;
 
+
   const TeamCarousel({
     super.key,
     required this.teams,
@@ -14,6 +15,7 @@ class TeamCarousel extends StatefulWidget {
 
   @override
   State<TeamCarousel> createState() => _TeamCarouselState();
+  
 }
 
 
@@ -69,6 +71,8 @@ class TeamPageCard extends StatelessWidget {
   final Map<String, dynamic> team;
   final Map<String, dynamic> orgInfo;
 
+  
+
   const TeamPageCard({
     super.key,
     required this.team,
@@ -120,28 +124,74 @@ class TeamPageCard extends StatelessWidget {
                       ),
                 const SizedBox(width: 6),
                 Expanded(
-                  child: Column(
-                    children: [
-                      Text(
-                        orgInfo['orgname_np'] ?? '',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.red,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                  // child: Column(
+                  //   children: [
+                  //     Text(
+                  //       orgInfo['header_text1'] ?? '',
+                  //       textAlign: TextAlign.center,
+                  //       style: const TextStyle(
+                  //       color: const Color(0xFFcd0711),
+                  //         fontSize: 13,
+                  //         fontWeight: FontWeight.bold,
+                  //       ),
+                  //     ),
                     
-                      Text(
-                        orgInfo['orgaddress1'] ?? '',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.blue,
-                          fontSize: 11,
-                        ),
-                      ),
-                    ],
-                  ),
+                  //   Text(
+                  //       orgInfo['header_text2'] ?? '',
+                  //       textAlign: TextAlign.center,
+                  //       style: const TextStyle(
+                  //        color: const Color(0xFFcd0711), 
+                  //         fontSize: 13,
+                  //         fontWeight: FontWeight.bold,
+                  //       ),
+                  //     ),
+                  //     Text(
+                  //       orgInfo['header_text3'] ?? '',
+                  //       textAlign: TextAlign.center,
+                  //       style: const TextStyle(
+                  //         //color: Colors.blue,
+                  //         color: const Color(0xFF2056ae),
+                  //         fontSize: 11,
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+
+                  child: Column(
+  mainAxisAlignment: MainAxisAlignment.center,
+  crossAxisAlignment: CrossAxisAlignment.center,
+  children: [
+    Text(
+      orgInfo['header_text1'] ?? '',
+
+      textAlign: TextAlign.center, 
+      style: const TextStyle(
+        color: Color(0xFFcd0711),
+        fontSize: 13,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    const SizedBox(height: 2),
+    Text(
+      orgInfo['header_text2'] ?? '',
+      textAlign: TextAlign.center,
+      style: const TextStyle(
+        color: Color(0xFFcd0711),
+        fontSize: 13,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    const SizedBox(height: 2),
+    Text(
+      orgInfo['header_text3'] ?? '',
+      textAlign: TextAlign.center,
+      style: const TextStyle(
+        color: Color(0xFF2056ae),
+        fontSize: 11,
+      ),
+    ),
+  ],
+),
                 ),
                 Image.asset(
                   'assets/flag1.gif',
