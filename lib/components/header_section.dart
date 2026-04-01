@@ -1,15 +1,22 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../login_page.dart';
 
 class HeaderSection extends StatelessWidget {
   final Map<String, dynamic> orgInfo;
+  final VoidCallback? onLogout;
 
-  const HeaderSection({Key? key, required this.orgInfo}) : super(key: key);
+  const HeaderSection({Key? key,
+   required this.orgInfo,
+   this.onLogout, 
+   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final isPortrait =
-        MediaQuery.of(context).orientation == Orientation.portrait;
+    MediaQuery.of(context).orientation == Orientation.portrait;
     final screenWidth = MediaQuery.of(context).size.width;
 
 final double contactBoxHeight = isPortrait ? 42 : 100; 
@@ -71,7 +78,6 @@ final double fontSizeSub = isPortrait ? 13 : 32;
                    // padding: EdgeInsets.only(bottom: isPortrait ? 1 : 2), 
                    padding: EdgeInsets.only(bottom: 0),
                     child: Text(
-                      //orgInfo['slogan'],
                        orgInfo['header_slogan'],
                       textAlign: TextAlign.center,
                         maxLines: 1,  // ✅ ADD THIS
@@ -164,6 +170,51 @@ final double fontSizeSub = isPortrait ? 13 : 32;
                           isPortrait: isPortrait,
                            fontSize: fontSizeSub,
                         ),
+//                         GestureDetector(
+//   onTap: onLogout,
+//   child: _contactRow(
+//     Icons.logout,
+//     'Logout',
+//     bg: Colors.blue,
+//     color: Colors.blue,
+//     isPortrait: isPortrait,
+//     fontSize: fontSizeSub,
+//      underline: true,
+//   ),
+// ),
+
+
+GestureDetector(
+  onTap: () async {
+    // Clear secure storage
+    const storage = FlutterSecureStorage();
+    await storage.deleteAll();
+
+    // Clear shared preferences
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('remember_me');
+    await prefs.remove('saved_username');
+    await prefs.remove('saved_password');
+
+    // Navigate to LoginPage
+    if (context.mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginPage()),
+        (route) => false,
+      );
+    }
+  },
+  child: _contactRow(
+    Icons.logout,
+    'Logout',
+    bg: Colors.blue,
+    color: Colors.blue,
+    isPortrait: isPortrait,
+    fontSize: fontSizeSub,
+    underline: true,
+  ),
+),
                       ],
                     ),
                   ),
@@ -193,6 +244,7 @@ final double fontSizeSub = isPortrait ? 13 : 32;
     Color color = Colors.black,
     bool isPortrait = false, 
     double fontSize = 10, 
+     bool underline = false,
   }) {
     return Padding(
       padding: EdgeInsets.only(bottom: isPortrait ? 1.0 : 2.0), 
@@ -211,6 +263,8 @@ Text(
   style: TextStyle(
     color: color,
  fontSize: fontSize,
+ decoration: underline ? TextDecoration.underline : TextDecoration.none,
+    decorationColor: color,
   ),
 ),
         ],
