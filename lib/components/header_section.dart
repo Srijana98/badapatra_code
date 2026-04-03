@@ -24,7 +24,8 @@ final double logoHeight = isPortrait ? 45 : contactBoxHeight;
 final double flagHeight = isPortrait ? 32 : contactBoxHeight; 
 
 final double fontSizeMain = isPortrait ? 16 : 42;
-final double fontSizeSub = isPortrait ? 13 : 32;
+//final double fontSizeSub = isPortrait ? 13 : 32;
+final double fontSizeSub = isPortrait ? 18 : 40; 
 
     return Container(
       width: double.infinity,
@@ -170,33 +171,23 @@ final double fontSizeSub = isPortrait ? 13 : 32;
                           isPortrait: isPortrait,
                            fontSize: fontSizeSub,
                         ),
-//                         GestureDetector(
-//   onTap: onLogout,
-//   child: _contactRow(
-//     Icons.logout,
-//     'Logout',
-//     bg: Colors.blue,
-//     color: Colors.blue,
-//     isPortrait: isPortrait,
-//     fontSize: fontSizeSub,
-//      underline: true,
-//   ),
-// ),
-
 
 GestureDetector(
   onTap: () async {
-    // Clear secure storage
     const storage = FlutterSecureStorage();
     await storage.deleteAll();
 
-    // Clear shared preferences
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('remember_me');
-    await prefs.remove('saved_username');
-    await prefs.remove('saved_password');
+    final rememberMe = prefs.getBool('remember_me') ?? false;
 
-    // Navigate to LoginPage
+    // ✅ Only clear credentials if Remember Me is NOT enabled
+    if (!rememberMe) {
+      await prefs.remove('saved_username');
+      await prefs.remove('saved_password');
+    }
+
+    // ✅ Do NOT touch 'remember_me' key itself on logout
+
     if (context.mounted) {
       Navigator.pushAndRemoveUntil(
         context,
@@ -254,8 +245,10 @@ GestureDetector(
           CircleAvatar(
   backgroundColor: bg,
   
-radius: isPortrait ? 9 : 30,
-child: Icon(icon, color: Colors.white, size: isPortrait ? 9 : 28)
+//radius: isPortrait ? 9 : 30,
+ radius: isPortrait ? 15 : 40,    
+//child: Icon(icon, color: Colors.white, size: isPortrait ? 9 : 28)
+child: Icon(icon, color: Colors.white, size: isPortrait ? 15 : 40),
 ),
 SizedBox(width: isPortrait ? 3 : 4),
 Text(

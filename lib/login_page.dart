@@ -795,7 +795,8 @@ class _LoginPageState extends State<LoginPage>
     final double inputFont    = isTV ? 16.0   : 14.0;
     final double inputVPad    = isTV ? 20.0   : 15.0;
     final double cardPadH     = isTV ? 40.0   : 24.0;
-    final double cardPadV     = isTV ? 42.0   : 30.0;
+   // final double cardPadV     = isTV ? 42.0   : 30.0;
+   final double cardPadV = isTV ? 28.0 : 20.0;
     final double buttonHeight = isTV ? 64.0   : 52.0;
     final double buttonFont   = isTV ? 17.0   : 15.0;
     final double iconSize     = isTV ? 24.0   : 20.0;
@@ -822,22 +823,22 @@ class _LoginPageState extends State<LoginPage>
   horizontal: isTV ? 80 : 28,
   vertical: 24,
 ),
-                // child: ConstrainedBox(
-                //   constraints: BoxConstraints(
-                //     minHeight: size.height -
-                //         MediaQuery.of(context).padding.top -
-                //         48,
-                //   ),
-                //   child: IntrinsicHeight(
-                //     child: FadeTransition(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: size.height -
+                        MediaQuery.of(context).padding.top -
+                        48,
+                  ),
+                  child: IntrinsicHeight(
+                    child: FadeTransition(
 
                 // ✅ FIXED - properly centered on TV
-child: ConstrainedBox(
-  constraints: BoxConstraints(
-    minHeight: size.height,  // full height use gara
-  ),
-  child: Center(   // ← yo add gara IntrinsicHeight ko saato
-    child: FadeTransition( 
+// child: ConstrainedBox(
+//   constraints: BoxConstraints(
+//     minHeight: size.height,  // full height use gara
+//   ),
+//   child: Center(   // ← yo add gara IntrinsicHeight ko saato
+//     child: FadeTransition( 
                   opacity: _fadeIn,
                   child: SlideTransition(
                     position: _slideUp,
@@ -859,7 +860,8 @@ child: ConstrainedBox(
                               ),
                             ),
 
-                            SizedBox(height: isTV ? 24 : 18),
+                           // SizedBox(height: isTV ? 24 : 18),
+                           SizedBox(height: isTV ? 6 : 4),
 
                             // ── Logo
                             Container(
@@ -888,8 +890,8 @@ child: ConstrainedBox(
                               ),
                             ),
 
-                            SizedBox(height: isTV ? 36 : 30),
-
+                           // SizedBox(height: isTV ? 36 : 30),
+                             SizedBox(height: isTV ? 18 : 14),
                             // ── Card ─────────────────────────────────────
                             Container(
                               decoration: BoxDecoration(
@@ -922,7 +924,8 @@ child: ConstrainedBox(
                                         color: const Color(0xFF0D3B8E),
                                       ),
                                     ),
-                                    const SizedBox(height: 4),
+                                   // const SizedBox(height: 4),
+                                   const SizedBox(height: 2),
                                     Text(
                                       'Please sign in to continue',
                                       textAlign: TextAlign.center,
@@ -932,7 +935,8 @@ child: ConstrainedBox(
                                       ),
                                     ),
 
-                                    SizedBox(height: isTV ? 32 : 26),
+                                   // SizedBox(height: isTV ? 32 : 26),
+                                   SizedBox(height: isTV ? 20 : 16),
 
                                     // Username field
                                     _buildLabel('Username / Email', labelFont),
@@ -953,11 +957,14 @@ child: ConstrainedBox(
                                               : null,
                                     ),
 
-                                    SizedBox(height: isTV ? 22 : 18),
+                                   // SizedBox(height: isTV ? 22 : 18),
+                                   SizedBox(height: isTV ? 14 : 12),
 
                                     // Password field
                                     _buildLabel('Password', labelFont),
-                                    const SizedBox(height: 6),
+                                   // const SizedBox(height: 6),
+
+                                  const SizedBox(height: 4),
                                     TextFormField(
                                       controller: _passwordController,
                                       obscureText: !_isPasswordVisible,
@@ -987,7 +994,8 @@ child: ConstrainedBox(
                                               : null,
                                     ),
 
-                                    const SizedBox(height: 5),
+                                 //   const SizedBox(height: 5),
+                                 const SizedBox(height: 3),
 
                                     // Remember Me
                                     Row(
@@ -1014,7 +1022,8 @@ child: ConstrainedBox(
                                       ],
                                     ),
 
-                                    SizedBox(height: isTV ? 8 : 4),
+                                //    SizedBox(height: isTV ? 8 : 4),
+                                SizedBox(height: isTV ? 4 : 2),
 
                                     // Login button
                                     SizedBox(

@@ -152,6 +152,7 @@ Widget build(BuildContext context) {
           padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
           child: Text(
             widget.title,
+             textAlign: TextAlign.center, 
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -173,18 +174,44 @@ Widget build(BuildContext context) {
       );
     }
 
+    // return Image.network(
+    //   widget.imageUrl,
+    //    height: double.infinity,
+    //   width: double.infinity,
+    //   fit: BoxFit.cover,
+    // );
+
     return Image.network(
-      widget.imageUrl,
-       height: double.infinity,
-      width: double.infinity,
-      fit: BoxFit.cover,
+  widget.imageUrl,
+  height: double.infinity,
+  width: double.infinity,
+  fit: BoxFit.cover,
+  loadingBuilder: (context, child, loadingProgress) {
+    if (loadingProgress == null) return child;
+    return const Center(
+      child: CircularProgressIndicator(color: Colors.red),
     );
+  },
+  errorBuilder: (context, error, stackTrace) {
+    return const Center(
+      child: Icon(Icons.broken_image, color: Colors.red, size: 48),
+    );
+  },
+);
   }
 
+  // String _extractYoutubeId(String url) {
+  //   if (url.contains("embed/")) {
+  //     return url.split("embed/").last;
+  //   }
+  //   return YoutubePlayer.convertUrlToId(url) ?? '';
+  // }
+
   String _extractYoutubeId(String url) {
-    if (url.contains("embed/")) {
-      return url.split("embed/").last;
-    }
-    return YoutubePlayer.convertUrlToId(url) ?? '';
+  if (url.contains("embed/")) {
+    final id = url.split("embed/").last;
+    return id.split("?").first; 
   }
+  return YoutubePlayer.convertUrlToId(url) ?? '';
+}
 }
