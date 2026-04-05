@@ -8,6 +8,8 @@ class BottomNewsBar extends StatelessWidget {
   final String rssType;  
   final String? qrUrl;
 
+  
+
   const BottomNewsBar({
     super.key,
     required this.newsItems,
@@ -83,8 +85,10 @@ class BottomNewsBar extends StatelessWidget {
   right: 0,
   bottom: 0,
   child: SizedBox(
-    width: 70,
-    height: 70,
+   width: 70,
+   height: 70,
+
+   
     child: QrImageView(
       data: qrUrl!,
       version: QrVersions.auto,

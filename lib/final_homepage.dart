@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'components/bottom_news_bar.dart';
 import 'components/header_section.dart';
-import 'components/sidebar_widget.dart';
 import 'components/top_news_bar.dart';
 import 'components/search_bar.dart' hide BottomNewsBar;
 import 'wara_badapatra_table.dart';
@@ -15,6 +14,7 @@ import 'brodcast_page.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'youtube_page.dart';
 import 'html_broadcast_page.dart';
+
 
 
 
@@ -361,213 +361,20 @@ return Scaffold(
 );
   }
 
+
+
   
 
-// Widget _buildMainContent() {
-//   final orientation = MediaQuery.of(context).orientation;
-//   final screenHeight = MediaQuery.of(context).size.height;
-
-//   if (orientation == Orientation.landscape) {
-//     return SingleChildScrollView(
-//       controller: _scrollController,
-//       child: Column(
-//         children: [
-//           Row(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-              
-              
-// Expanded(
- 
-//   // flex: 60,
-//   flex: 55,
-//   child: Padding(
-//     //padding: const EdgeInsets.only(left: 16, right: 8),
-//     padding: const EdgeInsets.only(left: 8, right: 4),
-//     child: LayoutBuilder(
-//       builder: (context, constraints) {
-//         return Column(
-//           mainAxisSize: MainAxisSize.min,
-//           crossAxisAlignment: CrossAxisAlignment.stretch,
-//           children: [
-//             CustomSearchBar(
-//               controller: _searchController,
-//               focusNode: _searchFocusNode,
-//               onSearch: _performSearch,
-//               badapatradata: _badapatradata,
-//             ),
-//             const SizedBox(height: 12),
-//             SizedBox(
-//               width: constraints.maxWidth,
-//               height: screenHeight * 0.7,
-//               child: WaraBadapatraTable(
-                
-//                // key: ValueKey(_searchCode),
-//                 searchCode: _searchCode,
-//                 onCodeTap: (service) => setState(
-//                   () => _selectedService = service,
-//                 ),
-//                 userid: widget.userid,
-//                 orgid: widget.orgid,
-//                 orgCode: widget.orgCode,
-//                 displayHeading: displayHeading,
-//               ),
-//             ),
-//           ],
-//         );
-//       },
-//     ),
-//   ),
-// ),
-
-             
-
-
-//               if (_teams.isNotEmpty)
-//   SizedBox(
-//      //width: 220,
-//      width:300,
-//     child: Column(
-//       children: [
-//         // Team Carousel
-//         Container(
-//          // height: screenHeight * 0.42,
-//          height: screenHeight * 0.40,
-
-//           margin: const EdgeInsets.only(right: 12, top: 1),
-//           decoration: BoxDecoration(
-//             color: Colors.white,
-//             border: Border.all(color: Colors.grey[300]!, width: 1),
-//             borderRadius: BorderRadius.circular(6),
-//           ),
-//           child: TeamCarousel(
-//             teams: _teams,
-//             orgInfo: orgInfo,
-//           ),
-//         ),
-        
-//         const SizedBox(height: 12),
-        
-     
-//         if (_galleryItems.isNotEmpty)
-//           Container(
-//             // height: screenHeight * 0.45,
-//             height: screenHeight * 0.43,
-//             margin: const EdgeInsets.only(right: 12),
-//             child: GalleryCarousel(
-//               galleryItems: _galleryItems,
-//             ),
-//           ),
-//       ],
-//     ),
-//   ),
-                 
-//             ],
-//           ),             
-//                           const SizedBox(height: 20),
-//         ],
-//       ),
-//     );
-//   }
-
-
-//   return SingleChildScrollView(
-//   controller: _scrollController,
-//   child: Column(
-//     children: [
-//       Padding(
-//         padding: const EdgeInsets.symmetric(horizontal: 16),
-//         child: CustomSearchBar(
-//           controller: _searchController,
-//           focusNode: _searchFocusNode,
-//           onSearch: _performSearch,
-//           badapatradata: _badapatradata,
-//         ),
-//       ),
-//       const SizedBox(height: 12),
-      
-    
-//       Row(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-         
-//           Expanded(
-//             flex: 60,
-//             child: Padding(
-//               padding: const EdgeInsets.only(left: 16),
-//               child: SizedBox(
-//                 height: screenHeight * 0.7,
-//                 child: WaraBadapatraTable(
-//                 //  key: ValueKey(_searchCode),
-//                   searchCode: _searchCode,
-//                   onCodeTap:(service) => setState(() => _selectedService = service),
-//                   userid: widget.userid,
-//                   orgid: widget.orgid,
-//                   orgCode: widget.orgCode,
-//                   displayHeading: displayHeading,
-//                 ),
-//               ),
-//             ),
-//           ),
-          
-//           const SizedBox(width: 8),
-          
-        
-//           if (_teams.isNotEmpty)
-//             Expanded(
-//               flex: 40,
-//               child: Column(
-//                 children: [
-                  
-//                   Container(
-//                     height: screenHeight * 0.35,
-//                     margin: const EdgeInsets.only(right: 12),
-//                     decoration: BoxDecoration(
-//                       color: Colors.white,
-//                       border: Border.all(color: Colors.grey[300]!, width: 1),
-//                       borderRadius: BorderRadius.circular(6),
-//                     ),
-//                     child: TeamCarousel(
-//                       teams: _teams,
-//                       orgInfo: orgInfo,
-//                     ),
-//                   ),
-                  
-//                   const SizedBox(height: 12),
-                  
-//                   // Gallery Carousel
-//                   if (_galleryItems.isNotEmpty)
-//                     Container(
-//                       margin: const EdgeInsets.only(right: 12),
-//                       child: GalleryCarousel(
-//                         galleryItems: _galleryItems,
-//                       ),
-//                     ),
-//                 ],
-//               ),
-//             ),
-//         ],
-//       ),
-//       const SizedBox(height: 20),
-//     ],
-//   ),
-// );
-
-// }
-
-
-// second code 
-Widget _buildMainContent() {
+  Widget _buildMainContent() {
   final orientation = MediaQuery.of(context).orientation;
   final screenHeight = MediaQuery.of(context).size.height;
 
-  // 📱 LANDSCAPE LAYOUT
+  // LANDSCAPE LAYOUT
   if (orientation == Orientation.landscape) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        
-        // 📌 LEFT SIDE (Fixed Search Bar + Scrollable Table)
+        // LEFT SIDE
         Expanded(
           flex: 55,
           child: Padding(
@@ -575,37 +382,23 @@ Widget _buildMainContent() {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // 1. Fixed Search Bar
                 CustomSearchBar(
                   controller: _searchController,
                   focusNode: _searchFocusNode,
                   onSearch: _performSearch,
                   badapatradata: _badapatradata,
                 ),
-                const SizedBox(height: 12),
-                
-                // 2. Scrollable Table
+                const SizedBox(height: 8),
                 Expanded(
-                  child: SingleChildScrollView(
-                    controller: _scrollController, // Applied here so the table scrolls properly
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        return SizedBox(
-                          width: constraints.maxWidth,
-                          height: screenHeight * 0.7,
-                          child: WaraBadapatraTable(
-                            searchCode: _searchCode,
-                            onCodeTap: (service) => setState(
-                              () => _selectedService = service,
-                            ),
-                            userid: widget.userid,
-                            orgid: widget.orgid,
-                            orgCode: widget.orgCode,
-                            displayHeading: displayHeading,
-                          ),
-                        );
-                      },
+                  child: WaraBadapatraTable(
+                    searchCode: _searchCode,
+                    onCodeTap: (service) => setState(
+                      () => _selectedService = service,
                     ),
+                    userid: widget.userid,
+                    orgid: widget.orgid,
+                    orgCode: widget.orgCode,
+                    displayHeading: displayHeading,
                   ),
                 ),
               ],
@@ -613,52 +406,128 @@ Widget _buildMainContent() {
           ),
         ),
 
-        // 📌 RIGHT SIDE (Team Carousel + Gallery)
+        // RIGHT SIDE
         if (_teams.isNotEmpty)
           SizedBox(
             width: 300,
-            // Wrapped in its own SingleChildScrollView in case of tiny screens, 
-            // but starts perfectly aligned with the Search Bar on the left!
-            child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 12, top: 1, bottom: 4),
               child: Column(
                 children: [
-                  Container(
-                    //height: screenHeight * 0.40,
-                    height: screenHeight * 0.44,
-                    margin: const EdgeInsets.only(right: 12, top: 1),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey[300]!, width: 1),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: TeamCarousel(
-                      teams: _teams,
-                      orgInfo: orgInfo,
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey[300]!, width: 1),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: TeamCarousel(
+                        teams: _teams,
+                        orgInfo: orgInfo,
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 13),
-                  if (_galleryItems.isNotEmpty)
-                    Container(
-                     // height: screenHeight * 0.43,
-                       height: screenHeight * 0.44,
-                      margin: const EdgeInsets.only(right: 12),
+                  if (_galleryItems.isNotEmpty) ...[
+                    const SizedBox(height: 8),
+                    Expanded(
+                      flex: 1,
                       child: GalleryCarousel(
                         galleryItems: _galleryItems,
                       ),
                     ),
-                  const SizedBox(height: 20),
+                  ],
                 ],
               ),
             ),
           ),
       ],
-    );
-  }
+    );  
+  }  
 
-  // 📱 PORTRAIT LAYOUT
+
+  // Widget _buildMainContent() {
+  // final orientation = MediaQuery.of(context).orientation;
+  // final screenHeight = MediaQuery.of(context).size.height;
+
+  // // LANDSCAPE LAYOUT
+  // if (orientation == Orientation.landscape) {
+  //   return Row(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       // LEFT SIDE (Increased flex safely handles the Table)
+  //       Expanded(
+  //         flex: 65, 
+  //         child: Padding(
+  //           padding: const EdgeInsets.only(left: 8, right: 8),
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.stretch,
+  //             children: [
+  //               CustomSearchBar(
+  //                 controller: _searchController,
+  //                 focusNode: _searchFocusNode,
+  //                 onSearch: _performSearch,
+  //                 badapatradata: _badapatradata,
+  //               ),
+  //               const SizedBox(height: 8),
+  //               Expanded(
+  //                 child: WaraBadapatraTable(
+  //                   searchCode: _searchCode,
+  //                   onCodeTap: (service) => setState(
+  //                     () => _selectedService = service,
+  //                   ),
+  //                   userid: widget.userid,
+  //                   orgid: widget.orgid,
+  //                   orgCode: widget.orgCode,
+  //                   displayHeading: displayHeading,
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+
+  //       // RIGHT SIDE (Replaced fixed sizing with Expanded responsiveness)
+  //       if (_teams.isNotEmpty)
+  //         Expanded(
+  //           flex: 35,
+  //           child: Padding(
+  //             padding: const EdgeInsets.only(right: 12, top: 1, bottom: 4),
+  //             child: Column(
+  //               children: [
+  //                 Expanded(
+  //                   flex: 1,
+  //                   child: Container(
+  //                     decoration: BoxDecoration(
+  //                       color: Colors.white,
+  //                       border: Border.all(color: Colors.grey[300]!, width: 1),
+  //                       borderRadius: BorderRadius.circular(6),
+  //                     ),
+  //                     child: TeamCarousel(
+  //                       teams: _teams,
+  //                       orgInfo: orgInfo,
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 if (_galleryItems.isNotEmpty) ...[
+  //                   const SizedBox(height: 8),
+  //                   Expanded(
+  //                     flex: 1,
+  //                     child: GalleryCarousel(
+  //                       galleryItems: _galleryItems,
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ],
+  //             ),
+  //           ),
+  //         ),
+  //     ],
+  //   );
+  // }
+  // PORTRAIT LAYOUT
   return Column(
     children: [
-      // 📌 1. FIXED/STICKY SEARCH BAR (Full Width)
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: CustomSearchBar(
@@ -669,8 +538,6 @@ Widget _buildMainContent() {
         ),
       ),
       const SizedBox(height: 12),
-
-      // 📌 2. SCROLLABLE CONTENT (Table and Teams below Search Bar)
       Expanded(
         child: SingleChildScrollView(
           controller: _scrollController,
@@ -685,7 +552,8 @@ Widget _buildMainContent() {
                     height: screenHeight * 0.7,
                     child: WaraBadapatraTable(
                       searchCode: _searchCode,
-                      onCodeTap:(service) => setState(() => _selectedService = service),
+                      onCodeTap: (service) =>
+                          setState(() => _selectedService = service),
                       userid: widget.userid,
                       orgid: widget.orgid,
                       orgCode: widget.orgCode,
@@ -705,7 +573,8 @@ Widget _buildMainContent() {
                         margin: const EdgeInsets.only(right: 12),
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          border: Border.all(color: Colors.grey[300]!, width: 1),
+                          border:
+                              Border.all(color: Colors.grey[300]!, width: 1),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: TeamCarousel(
@@ -731,5 +600,4 @@ Widget _buildMainContent() {
     ],
   );
 }
-  
 }
