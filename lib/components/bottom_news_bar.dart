@@ -8,7 +8,7 @@ class BottomNewsBar extends StatelessWidget {
   final String rssType;  
   final String? qrUrl;
 
-  
+
 
   const BottomNewsBar({
     super.key,
@@ -62,7 +62,8 @@ class BottomNewsBar extends StatelessWidget {
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
-                        velocity: 30,
+                      //  velocity: 30,
+                       velocity: 20,
                         blankSpace: 120,
                       ),
                     ),

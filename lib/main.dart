@@ -4,12 +4,27 @@ import 'services/hive_service.dart';
 import 'login_page.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';  
 import 'package:nagarikbadapatra/l10n/app_localizations.dart';
+import 'dart:io';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 
 final socketService = SocketTableService();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+
+  WakelockPlus.enable();
+
+  if (Platform.isAndroid) {
+    try {
+      await FlutterDisplayMode.setHighRefreshRate();
+      print("✅ High Refresh Rate Enabled");
+    } catch (e) {
+      print("❌ Display mode error: $e");
+    }
+  }
   await HiveService.init();
 
   // ✅ NEW API ENDPOINT

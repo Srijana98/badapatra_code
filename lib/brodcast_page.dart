@@ -14,6 +14,7 @@ class BroadcastPage extends StatefulWidget {
     required this.url,
     required this.duration,
     required this.orgId,
+
   });
 
   @override

@@ -61,6 +61,8 @@ dependencies:
   # Flutter localization
   flutter_localizations:
     sdk: flutter
+  flutter_displaymode: ^0.7.0
+  wakelock_plus: ^1.5.1
 
 dev_dependencies:
   flutter_test:

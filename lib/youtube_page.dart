@@ -31,6 +31,14 @@ class _GalleryCarouselState extends State<GalleryCarousel> {
     if (widget.galleryItems.isEmpty) return;
 
     _timer?.cancel();
+
+// added code for the youtube video
+     var currentItem = widget.galleryItems[_currentIndex];
+    String mediaType = currentItem['media_type'] ?? 'IMAGE';
+
+     if (mediaType == 'VIDEO') {
+      return; 
+    }
     
     // Get duration of current item
     int duration = _getCurrentDuration();
@@ -72,6 +80,8 @@ class _GalleryCarouselState extends State<GalleryCarousel> {
     String mediaUrl = mediaUrls.isNotEmpty ? mediaUrls[0] : '';
 
     return GalleryCard(
+      // added code for the video
+       key: ValueKey(mediaUrl),
       imageUrl: mediaUrl,
       title: title,
       mediaType: mediaType,
@@ -114,6 +124,8 @@ class _GalleryCardState extends State<GalleryCard> {
         flags: const YoutubePlayerFlags(
           autoPlay: true,
           mute: false,
+          // added code for the youtube video
+          loop: true,
         ),
       );
     }

@@ -1,8 +1,9 @@
-
+import 'dart:async';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart'; 
 import 'package:http/http.dart' as http;
 import 'package:hive_flutter/hive_flutter.dart';
 import 'models/service.dart';
@@ -10,6 +11,7 @@ import 'services/hive_service.dart';
 import 'package:nagarikbadapatra/l10n/app_localizations.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'main.dart';
+
 
 
 class DisplayHeading {
@@ -20,7 +22,7 @@ class DisplayHeading {
     required this.display,
     required this.width,
 
-  });
+ });
 
   factory DisplayHeading.fromJson(Map<String, dynamic> json) {
     return DisplayHeading(
@@ -63,162 +65,40 @@ class BadapatraDisplayHeading {
     );
   }
 
-  // List<ColumnConfig> getVisibleColumns(bool isPortrait, BuildContext context) {
-  //   final screenWidth = MediaQuery.of(context).size.width;
+  List<ColumnConfig> getVisibleColumns(double availableWidth, BuildContext context) {
+    double totalParts = 0;
+    if (sn.isVisible) totalParts += double.parse(sn.width);
+    if (serviceTypename.isVisible) totalParts += double.parse(serviceTypename.width);
+    if (serviceRecdetail.isVisible) totalParts += double.parse(serviceRecdetail.width);
+    if (fee.isVisible) totalParts += double.parse(fee.width);
+    if (time.isVisible) totalParts += double.parse(time.width);
+    if (serviceProvider.isVisible) totalParts += double.parse(serviceProvider.width);
+    if (complainListen.isVisible) totalParts += double.parse(complainListen.width);
 
-  //   final availableWidth = isPortrait
-  //       ? screenWidth - 32
-  //       : screenWidth - 180 - 40;
+    final double pixelPerPart = totalParts > 0 ? availableWidth / totalParts : 10;
 
-  //   double totalParts = 0;
-  //   if (sn.isVisible) totalParts += double.parse(sn.width);
-  //   if (serviceTypename.isVisible) totalParts += double.parse(serviceTypename.width);
-  //   if (serviceRecdetail.isVisible) totalParts += double.parse(serviceRecdetail.width);
-  //   if (fee.isVisible) totalParts += double.parse(fee.width);
-  //   if (time.isVisible) totalParts += double.parse(time.width);
-  //   if (serviceProvider.isVisible) totalParts += double.parse(serviceProvider.width);
-  //   if (complainListen.isVisible) totalParts += double.parse(complainListen.width);
+    List<ColumnConfig> columns = [];
 
-  //   final double pixelPerPart = totalParts > 0 ? availableWidth / totalParts : 10;
+    if (sn.isVisible) columns.add(ColumnConfig(key: 'sn', width: double.parse(sn.width) * pixelPerPart, title: AppLocalizations.of(context)!.idNo));
+    if (serviceTypename.isVisible) columns.add(ColumnConfig(key: 'service_typename', width: double.parse(serviceTypename.width) * pixelPerPart, title: AppLocalizations.of(context)!.serviceType));
+    if (serviceRecdetail.isVisible) columns.add(ColumnConfig(key: 'service_recdetail', width: double.parse(serviceRecdetail.width) * pixelPerPart, title: AppLocalizations.of(context)!.serviceRequirement));
+    if (fee.isVisible) columns.add(ColumnConfig(key: 'fee', width: double.parse(fee.width) * pixelPerPart, title: AppLocalizations.of(context)!.price));
+    if (time.isVisible) columns.add(ColumnConfig(key: 'time', width: double.parse(time.width) * pixelPerPart, title: AppLocalizations.of(context)!.time));
+    if (serviceProvider.isVisible) columns.add(ColumnConfig(key: 'service_provider', width: double.parse(serviceProvider.width) * pixelPerPart, title: AppLocalizations.of(context)!.serviceBranch));
+    if (complainListen.isVisible) columns.add(ColumnConfig(key: 'complain_listen', width: double.parse(complainListen.width) * pixelPerPart, title: AppLocalizations.of(context)!.commentSection));
 
-  //   List<ColumnConfig> columns = [];
-
-  //   if (sn.isVisible) {
-  //     columns.add(ColumnConfig(
-  //       key: 'sn',
-  //       width: double.parse(sn.width) * pixelPerPart,
-  //       title: AppLocalizations.of(context)!.idNo,
-  //     ));
-  //   }
-  //   if (serviceTypename.isVisible) {
-  //     columns.add(ColumnConfig(
-  //       key: 'service_typename',
-  //       width: double.parse(serviceTypename.width) * pixelPerPart,
-  //       title: AppLocalizations.of(context)!.serviceType,
-  //     ));
-  //   }
-  //   if (serviceRecdetail.isVisible) {
-  //     columns.add(ColumnConfig(
-  //       key: 'service_recdetail',
-  //       width: double.parse(serviceRecdetail.width) * pixelPerPart,
-  //       title: AppLocalizations.of(context)!.serviceRequirement,
-  //     ));
-  //   }
-  //   if (fee.isVisible) {
-  //     columns.add(ColumnConfig(
-  //       key: 'fee',
-  //       width: double.parse(fee.width) * pixelPerPart,
-  //       title: AppLocalizations.of(context)!.price,
-  //     ));
-  //   }
-  //   if (time.isVisible) {
-  //     columns.add(ColumnConfig(
-  //       key: 'time',
-  //       width: double.parse(time.width) * pixelPerPart,
-  //       title: AppLocalizations.of(context)!.time,
-  //     ));
-  //   }
-  //   if (serviceProvider.isVisible) {
-  //     columns.add(ColumnConfig(
-  //       key: 'service_provider',
-  //       width: double.parse(serviceProvider.width) * pixelPerPart,
-  //       title: AppLocalizations.of(context)!.serviceBranch,
-  //     ));
-  //   }
-  //   if (complainListen.isVisible) {
-  //     columns.add(ColumnConfig(
-  //       key: 'complain_listen',
-  //       width: double.parse(complainListen.width) * pixelPerPart,
-  //       title: AppLocalizations.of(context)!.commentSection,
-  //     ));
-  //   }
-
-  //   return columns;
-  // }
-
-
-  // Replace this method inside class BadapatraDisplayHeading
-List<ColumnConfig> getVisibleColumns(double availableWidth, BuildContext context) {
-  double totalParts = 0;
-  if (sn.isVisible) totalParts += double.parse(sn.width);
-  if (serviceTypename.isVisible) totalParts += double.parse(serviceTypename.width);
-  if (serviceRecdetail.isVisible) totalParts += double.parse(serviceRecdetail.width);
-  if (fee.isVisible) totalParts += double.parse(fee.width);
-  if (time.isVisible) totalParts += double.parse(time.width);
-  if (serviceProvider.isVisible) totalParts += double.parse(serviceProvider.width);
-  if (complainListen.isVisible) totalParts += double.parse(complainListen.width);
-
-  // Dynamically divide the exact available screen width 
-  final double pixelPerPart = totalParts > 0 ? availableWidth / totalParts : 10;
-
-  List<ColumnConfig> columns = [];
-
-  if (sn.isVisible) {
-    columns.add(ColumnConfig(
-      key: 'sn',
-      width: double.parse(sn.width) * pixelPerPart,
-      title: AppLocalizations.of(context)!.idNo,
-    ));
+    return columns;
   }
-  if (serviceTypename.isVisible) {
-    columns.add(ColumnConfig(
-      key: 'service_typename',
-      width: double.parse(serviceTypename.width) * pixelPerPart,
-      title: AppLocalizations.of(context)!.serviceType,
-    ));
-  }
-  if (serviceRecdetail.isVisible) {
-    columns.add(ColumnConfig(
-      key: 'service_recdetail',
-      width: double.parse(serviceRecdetail.width) * pixelPerPart,
-      title: AppLocalizations.of(context)!.serviceRequirement,
-    ));
-  }
-  if (fee.isVisible) {
-    columns.add(ColumnConfig(
-      key: 'fee',
-      width: double.parse(fee.width) * pixelPerPart,
-      title: AppLocalizations.of(context)!.price,
-    ));
-  }
-  if (time.isVisible) {
-    columns.add(ColumnConfig(
-      key: 'time',
-      width: double.parse(time.width) * pixelPerPart,
-      title: AppLocalizations.of(context)!.time,
-    ));
-  }
-  if (serviceProvider.isVisible) {
-    columns.add(ColumnConfig(
-      key: 'service_provider',
-      width: double.parse(serviceProvider.width) * pixelPerPart,
-      title: AppLocalizations.of(context)!.serviceBranch,
-    ));
-  }
-  if (complainListen.isVisible) {
-    columns.add(ColumnConfig(
-      key: 'complain_listen',
-      width: double.parse(complainListen.width) * pixelPerPart,
-      title: AppLocalizations.of(context)!.commentSection,
-    ));
-  }
-
-  return columns;
-}
 }
 
 class ColumnConfig {
   final String key;
   final double width;
   final String title;
-
-  ColumnConfig({
-    required this.key,
-    required this.width,
-    required this.title,
-  });
+  
+  
+  ColumnConfig({required this.key, required this.width, required this.title});
 }
-
 
 String toNepaliNumber(String input) {
   const englishDigits = ['0','1','2','3','4','5','6','7','8','9'];
@@ -256,19 +136,22 @@ class WaraBadapatraTable extends StatefulWidget {
 }
 
 class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
-
   late Future<List<Service>> futureServices;
   final ScrollController _headerController = ScrollController();
   final ScrollController _bodyController = ScrollController();
   final ScrollController _vController = ScrollController();
-  Timer? _autoScrollTimer;
-
+ 
+  bool _isAutoScrolling = false;
+  final double _scrollPixelsPerSecond = 15.0; // Slightly increased for smoother visual flow
   bool _isSyncingScroll = false;
   bool _hasInitialized = false;
-  bool _isReturningFromSearch = false;
   double _savedScrollPosition = 0.0; 
-  
 
+  static final RegExp _htmlRegex = RegExp(r'<[^>]*>');
+  static final RegExp _newlineRegex = RegExp(r'\n{3,}');
+
+   final Map<String, String> _cleanedTextCache = {};
+ 
   @override
   void initState() {
     super.initState();
@@ -278,11 +161,9 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
     _bodyController.addListener(_onBodyScroll);
   }
 
-
   @override
   void didUpdateWidget(WaraBadapatraTable oldWidget) {
     super.didUpdateWidget(oldWidget);
-    
     if (oldWidget.searchCode.isEmpty && widget.searchCode.isNotEmpty) {
       if (_vController.hasClients) {
         _savedScrollPosition = _vController.offset;
@@ -292,12 +173,12 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
 
   @override
   void dispose() {
+    _isAutoScrolling = false; // Stop the loop
     _headerController.removeListener(_onHeaderScroll);
     _bodyController.removeListener(_onBodyScroll);
     _headerController.dispose();
     _bodyController.dispose();
     _vController.dispose();
-    _autoScrollTimer?.cancel();
     super.dispose();
   }
 
@@ -336,9 +217,6 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
           'org_code': widget.orgCode,
         },
       );
-      print("🔹 HTTP status: ${response.statusCode}");
-      print("🔹 Response body: ${response.body}");
-
       if (response.statusCode == 200) {
         final decoded = jsonDecode(response.body);
         final list = decoded['data'] ?? [];
@@ -352,693 +230,295 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
     return await HiveService.getServices();
   }
 
-  void _startAutoScrollFromPosition(double fromPosition) {
-    _autoScrollTimer?.cancel();
-    _autoScrollTimer = null;
-
-    Future.delayed(const Duration(milliseconds: 300), () {
-      if (!mounted) return;
-      if (!_vController.hasClients) return;
-
-      if (fromPosition > 0) {
-        final maxScroll = _vController.position.maxScrollExtent;
-        final safePosition = fromPosition > maxScroll ? maxScroll : fromPosition;
-        _vController.jumpTo(safePosition);
-      }
-
-      const speed = 1.0;
-
-      _autoScrollTimer = Timer.periodic(const Duration(milliseconds: 50), (_) {
-        if (!mounted) {
-          _autoScrollTimer?.cancel();
-          return;
-        }
-        if (!_vController.hasClients) return;
-
-        final pos = _vController.position;
-        if (pos.maxScrollExtent <= 0) return;
-
-        if (pos.pixels >= pos.maxScrollExtent - 1) {
-          _autoScrollTimer?.cancel();
-          _autoScrollTimer = null;
-          Future.delayed(const Duration(seconds: 2), () {
-            if (!mounted) return;
-            if (_vController.hasClients) {
-              _vController.jumpTo(0);
-            }
-            _startAutoScroll();
-          });
-        } else {
-          _vController.jumpTo(pos.pixels + speed);
-        }
-      });
-    });
+  // --- NEW: NATIVE SILKY SMOOTH AUTO SCROLL ---
+  void _stopAutoScroll() {
+    _isAutoScrolling = false;
+    // Calling jumpTo on the current position cancels any running animateTo
+    if (_vController.hasClients) {
+      _vController.jumpTo(_vController.offset);
+    }
   }
 
-  void _startAutoScroll() {
-    _autoScrollTimer?.cancel();
-    _autoScrollTimer = null;
+  Future<void> _startAutoScrollFromPosition(double fromPosition) async {
+    _stopAutoScroll();
+    _isAutoScrolling = true;
 
-    if (_vController.hasClients) {
-      _vController.jumpTo(0);
+    await Future.delayed(const Duration(milliseconds: 300));
+    if (!mounted || !_vController.hasClients || !_isAutoScrolling) return;
+
+    final maxScroll = _vController.position.maxScrollExtent;
+    final safePosition = fromPosition > maxScroll ? maxScroll : fromPosition;
+    
+    if (safePosition > 0) _vController.jumpTo(safePosition);
+
+    _runNativeScrollLoop();
+  }
+
+  Future<void> _startAutoScroll() async {
+    _stopAutoScroll();
+    _isAutoScrolling = true;
+
+    await Future.delayed(const Duration(milliseconds: 100));
+    if (!mounted || !_vController.hasClients || !_isAutoScrolling) return;
+
+    if (_vController.hasClients) _vController.jumpTo(0);
+
+    _runNativeScrollLoop();
+  }
+
+  Future<void> _runNativeScrollLoop() async {
+    if (!mounted || !_vController.hasClients || !_isAutoScrolling) return;
+
+    final double currentScroll = _vController.offset;
+    final double maxScroll = _vController.position.maxScrollExtent;
+
+    if (maxScroll <= 0) {
+      // List is too short to scroll, check again in 1 second
+      await Future.delayed(const Duration(seconds: 1));
+      if (mounted) _runNativeScrollLoop();
+      return;
     }
 
-    Future.delayed(const Duration(milliseconds: 800), () {
-      if (!mounted) return;
-      if (!_vController.hasClients) return;
+    final double remainingDistance = maxScroll - currentScroll;
+    
+    // Calculate exactly how long it should take to reach the bottom at our desired speed
+    final int durationMs = ((remainingDistance / _scrollPixelsPerSecond) * 1000).toInt();
 
-      const speed = 1.0;
+    if (remainingDistance > 0) {
+      // Let Flutter's native engine handle the animation (Super Smooth)
+      await _vController.animateTo(
+        maxScroll,
+        duration: Duration(milliseconds: durationMs),
+        curve: Curves.linear, // Constant speed
+      );
+    }
 
-      _autoScrollTimer = Timer.periodic(const Duration(milliseconds: 50), (_) {
-        if (!mounted) {
-          _autoScrollTimer?.cancel();
-          return;
-        }
-        if (!_vController.hasClients) return;
-
-        final pos = _vController.position;
-        if (pos.maxScrollExtent <= 0) return;
-
-        if (pos.pixels >= pos.maxScrollExtent - 1) {
-          _autoScrollTimer?.cancel();
-          _autoScrollTimer = null;
-          Future.delayed(const Duration(seconds: 2), () {
-            if (!mounted) return;
-            if (_vController.hasClients) {
-              _vController.jumpTo(0);
-            }
-            _startAutoScroll();
-          });
-        } else {
-          _vController.jumpTo(pos.pixels + speed);
-        }
-      });
-    });
+    // Once it reaches the bottom, pause, reset to top, and loop
+    if (_isAutoScrolling && mounted) {
+      await Future.delayed(const Duration(seconds: 2)); // Pause at bottom
+      if (mounted && _vController.hasClients) {
+        _vController.jumpTo(0); // Instantly jump to top
+        _runNativeScrollLoop(); // Start again
+      }
+    }
   }
+ 
 
   String _getFieldValue(Service service, String fieldKey) {
     switch (fieldKey) {
-      case 'sn':
-        return toNepaliNumber(service.code);
-      case 'service_typename':
-        return service.serviceTypeName;
-      case 'service_recdetail':
-        return service.serviceRecDetail;
-      case 'fee':
-        return service.fee;
-      case 'time':
-        return service.time;
-      case 'service_provider':
-        return service.serviceProvider;
-      case 'complain_listen':
-        return service.complainListen;
-      default:
-        return '';
+      case 'sn': return toNepaliNumber(service.code);
+      case 'service_typename': return service.serviceTypeName;
+      case 'service_recdetail': return service.serviceRecDetail;
+      case 'fee': return service.fee;
+      case 'time': return service.time;
+      case 'service_provider': return service.serviceProvider;
+      case 'complain_listen': return service.complainListen;
+      default: return '';
     }
   }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     final isPortrait =
-//         MediaQuery.of(context).orientation == Orientation.portrait;
+  @override
+  Widget build(BuildContext context) {
+    final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
-//     final visibleColumns =
-//         widget.displayHeading?.getVisibleColumns(isPortrait, context) ?? [];
-//     final double totalTableWidth =
-//         visibleColumns.fold(0, (sum, col) => sum + col.width);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double availableWidth = constraints.maxWidth;
+        if (availableWidth.isInfinite) availableWidth = MediaQuery.of(context).size.width;
 
-//     if (visibleColumns.isEmpty) {
-//       return const Center(
-//         child: Text(
-//           'Display configuration not available',
-//           style: TextStyle(fontSize: 18, color: Colors.red),
-//         ),
-//       );
-//     }
+        final visibleColumns = widget.displayHeading?.getVisibleColumns(availableWidth, context) ?? [];
+        final double totalTableWidth = visibleColumns.fold(0, (sum, col) => sum + col.width);
 
-//     return FutureBuilder<List<Service>>(
-//       future: futureServices,
-//       builder: (context, snapshot) {
-//         if (snapshot.connectionState == ConnectionState.waiting) {
-//           return const Center(child: CircularProgressIndicator());
-//         }
-//         if (!snapshot.hasData || snapshot.data!.isEmpty) {
-//           return const Center(
-//             child: Text('डेटा उपलब्ध छैन।', style: TextStyle(fontSize: 28)),
-//           );
-//         }
+        if (visibleColumns.isEmpty) {
+          return const Center(child: Text('Display configuration not available', style: TextStyle(fontSize: 18, color: Colors.red)));
+        }
 
-//         final filtered = widget.searchCode.isEmpty
-//             ? snapshot.data!
-//             : snapshot.data!.where((s) {
-//                 String serviceCode = s.code.replaceAll('.', '').trim();
-//                 String nepaliSearch = toNepaliNumber(widget.searchCode)
-//                     .replaceAll('.', '')
-//                     .trim();
-//                 String engSearch = widget.searchCode.replaceAll('.', '').trim();
-//                 return serviceCode == nepaliSearch || serviceCode == engSearch;
-//               }).toList();
+        return FutureBuilder<List<Service>>(
+          future: futureServices,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator());
+            if (!snapshot.hasData || snapshot.data!.isEmpty) return const Center(child: Text('डेटा उपलब्ध छैन।', style: TextStyle(fontSize: 28)));
 
-        
-// WidgetsBinding.instance.addPostFrameCallback((_) {
-//           if (!mounted) return;
+            final filtered = widget.searchCode.isEmpty
+                ? snapshot.data!
+                : snapshot.data!.where((s) {
+                    String serviceCode = s.code.replaceAll('.', '').trim();
+                    String nepaliSearch = toNepaliNumber(widget.searchCode).replaceAll('.', '').trim();
+                    String engSearch = widget.searchCode.replaceAll('.', '').trim();
+                    return serviceCode == nepaliSearch || serviceCode == engSearch;
+                  }).toList();
 
-//           if (!_hasInitialized) {
-//             // A. VERY FIRST LOAD ONLY: Reset to 0 and start scrolling
-//             _autoScrollTimer?.cancel();
-//             if (_headerController.hasClients) _headerController.jumpTo(0);
-//             if (_bodyController.hasClients) _bodyController.jumpTo(0);
-//             if (_vController.hasClients) _vController.jumpTo(0);
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (!mounted) return;
+              if (!_hasInitialized) {
+                _stopAutoScroll();
+                if (_headerController.hasClients) _headerController.jumpTo(0);
+                if (_bodyController.hasClients) _bodyController.jumpTo(0);
+                if (_vController.hasClients) _vController.jumpTo(0);
 
-//             _hasInitialized = true;
-
-//             if (filtered.length > 2) {
-//               _startAutoScroll();
-//             }
-//           } else {
-//             if (widget.searchCode.isNotEmpty) {
-//               _autoScrollTimer?.cancel();
-//               _autoScrollTimer = null;
-//             } else if (widget.searchCode.isEmpty && _autoScrollTimer == null) {
-//               if (filtered.length > 2) {
-//                 _startAutoScrollFromPosition(_savedScrollPosition);
-//               }
-//             }
-//           }
-//         });
-
-//         return Column(
-//           children: [
-//             Expanded(
-//               child: Column(
-//                 children: [
-//                   // ─── RED HEADER ───────────────────────────────────────────
-//                   Container(
-//                     height: isPortrait ? 44 : 38,
-//                     color: const Color(0xFFC40000),
-//                     child: SingleChildScrollView(
-//                       controller: _headerController,
-//                       scrollDirection: Axis.horizontal,
-//                       physics: const ClampingScrollPhysics(),
-//                       child: Row(
-//                         children: List.generate(visibleColumns.length, (i) {
-//                           final column = visibleColumns[i];
-//                           final isLast = i == visibleColumns.length - 1;
-//                           return Container(
-//                             width: column.width,
-//                             alignment: Alignment.center,
-//                             padding: const EdgeInsets.symmetric(horizontal: 8),
-//                             // ✅ FIX: use BoxDecoration to combine color + border
-//                             decoration: BoxDecoration(
-//                               color: i.isEven
-//                                   ? const Color(0xFFE45C53)
-//                                   : const Color(0xFFC40000),
-//                               border: Border(
-//                                 right: isLast
-//                                     ? BorderSide.none
-//                                     :  BorderSide(
-//                                        // color: Colors.white54,
-//                                       // color: Color(0xFF8B0000),
-//                                      // color: Color(0xFFDEC2C4),
-//                                   // color: Colors.white.withOpacity(0.1),
-//                                   color: Colors.grey[350]!,
-                                    
-//                                         width: 1,
-//                                       ),
-//                               ),
-//                             ),
-//                             child: Text(
-//                               column.title,
-//                               style: TextStyle(
-//                                 color: Colors.white,
-//                                 fontWeight: FontWeight.bold,
-//                                 fontSize: isPortrait ? 12 : 11,
-//                               ),
-//                               textAlign: TextAlign.center,
-//                               softWrap: true,
-//                               maxLines: 2,
-//                               overflow: TextOverflow.ellipsis,
-//                             ),
-//                           );
-//                         }),
-//                       ),
-//                     ),
-//                   ),
-
-//                   // ─── BODY ─────────────────────────────────────────────────
-//                   Expanded(
-//                     child: SingleChildScrollView(
-//                       controller: _vController,
-//                       child: SingleChildScrollView(
-//                         controller: _bodyController,
-//                         scrollDirection: Axis.horizontal,
-//                         physics: const ClampingScrollPhysics(),
-//                         child: Column(
-//                           children: filtered.asMap().entries.map((e) {
-//                             final service = e.value;
-//                             final index = e.key;
-//                             final isEven = index % 2 == 0;
-
-//                             final bg = isEven
-//                                 ? const Color(0xFFF9D7D7)
-//                                 : const Color(0xFF006699);
-//                             final textColor = isEven
-//                                 ? const Color(0xFF2056AE)
-//                                 : Colors.white;
-
-//                             // ✅ FIX: white divider line between each row
-//                             return Container(
-//                               decoration: BoxDecoration(
-//                                 color: bg,
-//                                 border:  Border(
-//                                   bottom: BorderSide(
-//                                   //  color: Colors.white,
-//                                   // color: Colors.white.withOpacity(0.1),
-//                                   color: Colors.grey[350]!,
-                                 
-//                                     width: 1,
-//                                   ),
-//                                 ),
-//                               ),
-//                               // ✅ FIX: IntrinsicHeight makes all cells same height
-//                               child: IntrinsicHeight(
-//                                 child: InkWell(
-//                                   onTap: () => widget.onCodeTap?.call(service),
-//                                   child: Row(
-//                                     crossAxisAlignment:
-//                                         CrossAxisAlignment.stretch,
-//                                     children: visibleColumns
-//                                         .asMap()
-//                                         .entries
-//                                         .map((entry) {
-//                                       final colIndex = entry.key;
-//                                       final column = entry.value;
-//                                       final value = _getFieldValue(
-//                                           service, column.key);
-//                                       final isBold = column.key == 'sn';
-//                                       final isLastCol = colIndex ==
-//                                           visibleColumns.length - 1;
-
-//                                       return _cellWithBorder(
-//                                         column.width,
-//                                         value,
-//                                         textColor,
-//                                         bold: isBold,
-//                                         isLast: isLastCol,
-//                                       );
-//                                     }).toList(),
-//                                   ),
-//                                 ),
-//                               ),
-//                             );
-//                           }).toList(),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         );
-//       },
-//     );
-//   }
-
-
-// Update the build method inside _WaraBadapatraTableState
-@override
-Widget build(BuildContext context) {
-  final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-
-  return LayoutBuilder(
-    builder: (context, constraints) {
-      // 1. Get dynamically available width 
-      double availableWidth = constraints.maxWidth;
-      
-      // Fallback in case constraints are unbounded
-      if (availableWidth.isInfinite) {
-        availableWidth = MediaQuery.of(context).size.width;
-      }
-
-      // 2. Fetch columns dynamically based on this width
-      final visibleColumns = widget.displayHeading?.getVisibleColumns(availableWidth, context) ?? [];
-      final double totalTableWidth = visibleColumns.fold(0, (sum, col) => sum + col.width);
-
-      if (visibleColumns.isEmpty) {
-        return const Center(
-          child: Text(
-            'Display configuration not available',
-            style: TextStyle(fontSize: 18, color: Colors.red),
-          ),
-        );
-      }
-
-      return FutureBuilder<List<Service>>(
-        future: futureServices,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(
-              child: Text('डेटा उपलब्ध छैन।', style: TextStyle(fontSize: 28)),
-            );
-          }
-
-          final filtered = widget.searchCode.isEmpty
-              ? snapshot.data!
-              : snapshot.data!.where((s) {
-                  String serviceCode = s.code.replaceAll('.', '').trim();
-                  String nepaliSearch = toNepaliNumber(widget.searchCode).replaceAll('.', '').trim();
-                  String engSearch = widget.searchCode.replaceAll('.', '').trim();
-                  return serviceCode == nepaliSearch || serviceCode == engSearch;
-                }).toList();
-
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (!mounted) return;
-
-            if (!_hasInitialized) {
-              _autoScrollTimer?.cancel();
-              if (_headerController.hasClients) _headerController.jumpTo(0);
-              if (_bodyController.hasClients) _bodyController.jumpTo(0);
-              if (_vController.hasClients) _vController.jumpTo(0);
-
-              _hasInitialized = true;
-
-              if (filtered.length > 2) {
-                _startAutoScroll();
-              }
-            } else {
-              if (widget.searchCode.isNotEmpty) {
-                _autoScrollTimer?.cancel();
-                _autoScrollTimer = null;
-              } else if (widget.searchCode.isEmpty && _autoScrollTimer == null) {
-                if (filtered.length > 2) {
-                  _startAutoScrollFromPosition(_savedScrollPosition);
+                _hasInitialized = true;
+                if (filtered.length > 2) _startAutoScroll();
+              } else {
+                if (widget.searchCode.isNotEmpty) {
+                  _stopAutoScroll();
+                } else if (widget.searchCode.isEmpty && !_isAutoScrolling) {
+                  if (filtered.length > 2) _startAutoScrollFromPosition(_savedScrollPosition);
                 }
               }
-            }
-          });
+            });
 
-          return Column(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    // ─── RED HEADER ───────────────────────────────────────────
-                    // Container(
-                    //   height: isPortrait ? 44 : 38,
-                    //   color: const Color(0xFFC40000),
-                    //   child: SingleChildScrollView(
-                    //     controller: _headerController,
-                    //     scrollDirection: Axis.horizontal,
-                    //     physics: const ClampingScrollPhysics(),
-                    //     child: Row(
-                    //       children: List.generate(visibleColumns.length, (i) {
-                    //         final column = visibleColumns[i];
-                    //         final isLast = i == visibleColumns.length - 1;
-                    //         return Container(
-                    //           width: column.width,
-                    //           alignment: Alignment.center,
-                    //           padding: const EdgeInsets.symmetric(horizontal: 8),
+            return Column(
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      // Header
+                      Container(
+                        height: isPortrait ? 65 : 55, 
+                        color: const Color(0xFFC40000),
+                        child: SingleChildScrollView(
+                          controller: _headerController,
+                          scrollDirection: Axis.horizontal,
+                          physics: const ClampingScrollPhysics(),
+                          child: Row(
+                            children: List.generate(visibleColumns.length, (i) {
+                              final column = visibleColumns[i];
+                              final isLast = i == visibleColumns.length - 1;
+                              return Container(
+                                width: column.width,
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6), 
+                                decoration: BoxDecoration(
+                                  color: i.isEven ? const Color(0xFFE45C53) : const Color(0xFFC40000),
+                                  border: Border(right: isLast ? BorderSide.none : BorderSide(color: Colors.grey[350]!, width: 1)),
+                                ),
+                                child: Text(
+                                  column.title,
+                                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: isPortrait ? 12 : 11, height: 1.3),
+                                  textAlign: TextAlign.center,
+                                  softWrap: true,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
+                      ),
 
-
-
-                    //           decoration: BoxDecoration(
-                    //             color: i.isEven ? const Color(0xFFE45C53) : const Color(0xFFC40000),
-                    //             border: Border(
-                    //               right: isLast
-                    //                   ? BorderSide.none
-                    //                   : BorderSide(color: Colors.grey[350]!, width: 1),
-                    //             ),
-                    //           ),
-                    //           child: Text(
-                    //             column.title,
-                    //             style: TextStyle(
-                    //               color: Colors.white,
-                    //               fontWeight: FontWeight.bold,
-                    //               fontSize: isPortrait ? 12 : 11,
-                    //             ),
-                    //             textAlign: TextAlign.center,
-                    //             softWrap: true,
-                    //             maxLines: 3,
-                    //             overflow: TextOverflow.ellipsis,
-                    //           ),
-                    //         );
-                    //       }),
-                    //     ),
-                    //   ),
-                    // ),
-
-
-                    Container(
-  // 1. INCREASED HEIGHT HERE (was 44 : 38)
-  height: isPortrait ? 65 : 55, 
-  color: const Color(0xFFC40000),
-  child: SingleChildScrollView(
-    controller: _headerController,
-    scrollDirection: Axis.horizontal,
-    physics: const ClampingScrollPhysics(),
-    child: Row(
-      children: List.generate(visibleColumns.length, (i) {
-        final column = visibleColumns[i];
-        final isLast = i == visibleColumns.length - 1;
-        return Container(
-          width: column.width,
-          alignment: Alignment.center,
-          // 2. ADDED VERTICAL PADDING so the 3 lines don't touch the borders
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6), 
-          decoration: BoxDecoration(
-            color: i.isEven ? const Color(0xFFE45C53) : const Color(0xFFC40000),
-            border: Border(
-              right: isLast
-                  ? BorderSide.none
-                  : BorderSide(color: Colors.grey[350]!, width: 1),
-            ),
-          ),
-          child: Text(
-            column.title,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: isPortrait ? 12 : 11,
-              height: 1.3, // 3. ADDED LINE HEIGHT for better readability
-            ),
-            textAlign: TextAlign.center,
-            softWrap: true,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-          ),
-        );
-      }),
-    ),
-  ),
-),
-
-                    // ─── BODY ─────────────────────────────────────────────────
-                    Expanded(
-                      child: SingleChildScrollView(
-                        controller: _vController,
+                      // Body
+                      Expanded(
                         child: SingleChildScrollView(
                           controller: _bodyController,
                           scrollDirection: Axis.horizontal,
                           physics: const ClampingScrollPhysics(),
-                          child: Column(
-                            children: filtered.asMap().entries.map((e) {
-                              final service = e.value;
-                              final index = e.key;
-                              final isEven = index % 2 == 0;
+                          child: SizedBox(
+                            width: totalTableWidth,
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero, 
+                              controller: _vController,
+                              physics: const ClampingScrollPhysics(),
+                             // cacheExtent: 250, 
+                               cacheExtent: 500, 
+                              itemCount: filtered.length,
+                              itemBuilder: (context, index) {
+                                final service = filtered[index];
+                                final isEven = index % 2 == 0;
+                                final bg = isEven ? const Color(0xFFF9D7D7) : const Color(0xFF006699);
+                                final textColor = isEven ? const Color(0xFF2056AE) : Colors.white;
 
-                              final bg = isEven ? const Color(0xFFF9D7D7) : const Color(0xFF006699);
-                              final textColor = isEven ? const Color(0xFF2056AE) : Colors.white;
-
-                              return Container(
-                                decoration: BoxDecoration(
+                                return Material(
                                   color: bg,
-                                  border: Border(
-                                    bottom: BorderSide(color: Colors.grey[350]!, width: 1),
-                                  ),
-                                ),
-                                child: IntrinsicHeight(
                                   child: InkWell(
                                     onTap: () => widget.onCodeTap?.call(service),
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                                      children: visibleColumns.asMap().entries.map((entry) {
-                                        final colIndex = entry.key;
-                                        final column = entry.value;
-                                        final value = _getFieldValue(service, column.key);
-                                        final isBold = column.key == 'sn';
-                                        final isLastCol = colIndex == visibleColumns.length - 1;
-
-                                        return _cellWithBorder(
-                                          column.width,
-                                          value,
-                                          textColor,
-                                          bold: isBold,
-                                          isLast: isLastCol,
-                                        );
-                                      }).toList(),
+                                    child: Table(
+                                      columnWidths: {
+                                        for (int i = 0; i < visibleColumns.length; i++)
+                                          i: FixedColumnWidth(visibleColumns[i].width),
+                                      },
+                                      border: TableBorder(
+                                        bottom: BorderSide(color: Colors.grey[350]!, width: 1),
+                                        verticalInside: const BorderSide(color: Color(0xFFDFC2C4), width: 1),
+                                      ),
+                                      children: [
+                                        TableRow(
+                                          children: visibleColumns.map((column) {
+                                            final value = _getFieldValue(service, column.key);
+                                            return _cellWithBorder(
+                                              value,
+                                              textColor,
+                                              bold: column.key == 'sn',
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ),
-                              );
-                            }).toList(),
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
-      );
-    },
-  );
-}
-
-  Widget _buildTeamCard(Map<String, dynamic> team) {
-    return Container(
-      width: 280,
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.red, width: 2),
-        color: Colors.white,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Text(
-            'गुनासो सुन्ने अधिकारी',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.red,
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          CircleAvatar(
-            radius: 30,
-            backgroundColor: Colors.blue,
-            child: CircleAvatar(
-              radius: 28,
-              backgroundImage: team['photo'] != null &&
-                      team['photo'].toString().isNotEmpty
-                  ? NetworkImage(team['photo'])
-                  : const AssetImage('assets/images/profile.jpeg')
-                      as ImageProvider,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Text(
-              team['name'] ?? 'N/A',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          const SizedBox(height: 4),
-          if (team['designation'] != null)
-            Text(
-              team['designation'],
-              style: const TextStyle(
-                color: Colors.red,
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          const SizedBox(height: 4),
-          if (team['phone'] != null)
-            Text(
-              'फोन नं.: ${team['phone']}',
-              style: const TextStyle(
-                color: Colors.blue,
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-        ],
-      ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 
-  // ✅ Original _cell kept for any other usage
-  Widget _cell(double width, String text, Color color, {bool bold = false}) {
-    final String cleanText = text
-        .replaceAll(RegExp(r'<[^>]*>'), '')
-        .replaceAll('&nbsp;', ' ')
-        .replaceAll('\r\n', '\n')
-        .replaceAll(RegExp(r'\n{3,}'), '\n\n')
-        .trim();
+  // Widget _cellWithBorder(String text, Color color, {bool bold = false}) {
+  //   final String cleanText = text
+  //       .replaceAll(_htmlRegex, '')
+  //       .replaceAll('&nbsp;', ' ')
+  //       .replaceAll('\r\n', '\n')
+  //       .replaceAll(_newlineRegex, '\n\n')
+  //       .trim();
 
-    return SizedBox(
-      width: width,
-      child: Text(
-        cleanText,
-        style: TextStyle(
-          color: color,
-          fontSize: 13.8,
-          height: 1.5,
-          fontWeight: bold ? FontWeight.bold : FontWeight.w600,
-        ),
-        softWrap: true,
-        overflow: TextOverflow.visible,
-      ),
-    );
-  }
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+  //     child: Text(
+  //       cleanText,
+  //       style: TextStyle(
+  //         color: color, 
+  //         fontSize: 13.8, 
+  //         height: 1.5, 
+  //         fontWeight: bold ? FontWeight.bold : FontWeight.w600
+  //       ),
+  //       softWrap: true,
+  //       overflow: TextOverflow.visible,
+  //     ),
+  //   );
+  // }
 
-  // ✅ NEW: cell with right border divider + padding
-  Widget _cellWithBorder(
-    double width,
-    String text,
-    Color color, {
-    bool bold = false,
-    bool isLast = false,
-  }) {
-    final String cleanText = text
-        .replaceAll(RegExp(r'<[^>]*>'), '')
-        .replaceAll('&nbsp;', ' ')
-        .replaceAll('\r\n', '\n')
-        .replaceAll(RegExp(r'\n{3,}'), '\n\n')
-        .trim();
+  Widget _cellWithBorder(String text, Color color, {bool bold = false}) {
+    String cleanText;
+    if (_cleanedTextCache.containsKey(text)) {
+      cleanText = _cleanedTextCache[text]!;
+    } else {
+      // यदि छैन भने मात्र Regex चलाउने र Cache मा सेभ गर्ने
+      cleanText = text
+          .replaceAll(_htmlRegex, '')
+          .replaceAll('&nbsp;', ' ')
+          .replaceAll('\r\n', '\n')
+          .replaceAll(_newlineRegex, '\n\n')
+          .trim();
+      _cleanedTextCache[text] = cleanText;
+    }
 
-    return Container(
-      width: width,
+    return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-      decoration: BoxDecoration(
-        border: Border(
-          right: isLast
-              ? BorderSide.none
-              : const BorderSide(
-                //  color: Colors.white,
-                //color: Color(0xFF8B0000),
-                color: Color(0xFFDFC2C4),
-                  width: 1,
-                ),
-        ),
-      ),
       child: Text(
         cleanText,
         style: TextStyle(
-          color: color,
-          fontSize: 13.8,
-          height: 1.5,
-          fontWeight: bold ? FontWeight.bold : FontWeight.w600,
+          color: color, 
+          fontSize: 13.8, 
+          height: 1.5, 
+          fontWeight: bold ? FontWeight.bold : FontWeight.w600
         ),
         softWrap: true,
         overflow: TextOverflow.visible,
@@ -1046,11 +526,5 @@ Widget build(BuildContext context) {
     );
   }
 }
-
-
-
-
-
-
 
 

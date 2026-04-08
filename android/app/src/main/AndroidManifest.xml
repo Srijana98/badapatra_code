@@ -7,8 +7,9 @@
     <application
         android:label="nagarikbadapatra"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
         android:hardwareAccelerated="true"
+        android:largeHeap="true">
         
         <activity
             android:name=".MainActivity"

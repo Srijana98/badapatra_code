@@ -28,7 +28,7 @@ class FinalHomePage extends StatefulWidget {
   final List<dynamic> badapatradata;
   final Map<String, dynamic>? displayHeading;
   final List<dynamic> gallery; 
-
+  
 
 
   const FinalHomePage({
@@ -68,6 +68,7 @@ class _FinalHomePageState extends State<FinalHomePage> {
    List<dynamic> _galleryItems = [];
 
   bool _isBroadcastOpen = false;
+  
 
 
 @override
@@ -446,85 +447,7 @@ return Scaffold(
   }  
 
 
-  // Widget _buildMainContent() {
-  // final orientation = MediaQuery.of(context).orientation;
-  // final screenHeight = MediaQuery.of(context).size.height;
 
-  // // LANDSCAPE LAYOUT
-  // if (orientation == Orientation.landscape) {
-  //   return Row(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       // LEFT SIDE (Increased flex safely handles the Table)
-  //       Expanded(
-  //         flex: 65, 
-  //         child: Padding(
-  //           padding: const EdgeInsets.only(left: 8, right: 8),
-  //           child: Column(
-  //             crossAxisAlignment: CrossAxisAlignment.stretch,
-  //             children: [
-  //               CustomSearchBar(
-  //                 controller: _searchController,
-  //                 focusNode: _searchFocusNode,
-  //                 onSearch: _performSearch,
-  //                 badapatradata: _badapatradata,
-  //               ),
-  //               const SizedBox(height: 8),
-  //               Expanded(
-  //                 child: WaraBadapatraTable(
-  //                   searchCode: _searchCode,
-  //                   onCodeTap: (service) => setState(
-  //                     () => _selectedService = service,
-  //                   ),
-  //                   userid: widget.userid,
-  //                   orgid: widget.orgid,
-  //                   orgCode: widget.orgCode,
-  //                   displayHeading: displayHeading,
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-
-  //       // RIGHT SIDE (Replaced fixed sizing with Expanded responsiveness)
-  //       if (_teams.isNotEmpty)
-  //         Expanded(
-  //           flex: 35,
-  //           child: Padding(
-  //             padding: const EdgeInsets.only(right: 12, top: 1, bottom: 4),
-  //             child: Column(
-  //               children: [
-  //                 Expanded(
-  //                   flex: 1,
-  //                   child: Container(
-  //                     decoration: BoxDecoration(
-  //                       color: Colors.white,
-  //                       border: Border.all(color: Colors.grey[300]!, width: 1),
-  //                       borderRadius: BorderRadius.circular(6),
-  //                     ),
-  //                     child: TeamCarousel(
-  //                       teams: _teams,
-  //                       orgInfo: orgInfo,
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 if (_galleryItems.isNotEmpty) ...[
-  //                   const SizedBox(height: 8),
-  //                   Expanded(
-  //                     flex: 1,
-  //                     child: GalleryCarousel(
-  //                       galleryItems: _galleryItems,
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ],
-  //             ),
-  //           ),
-  //         ),
-  //     ],
-  //   );
-  // }
   // PORTRAIT LAYOUT
   return Column(
     children: [
