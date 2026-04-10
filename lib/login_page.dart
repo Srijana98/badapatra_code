@@ -818,11 +818,10 @@ class _LoginPageState extends State<LoginPage>
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
-              //  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 24),
               padding: EdgeInsets.symmetric(
-  horizontal: isTV ? 80 : 28,
-  vertical: 24,
-),
+              horizontal: isTV ? 80 : 28,
+              vertical: 24,
+                ),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
                     minHeight: size.height -
@@ -832,13 +831,6 @@ class _LoginPageState extends State<LoginPage>
                   child: IntrinsicHeight(
                     child: FadeTransition(
 
-                // ✅ FIXED - properly centered on TV
-// child: ConstrainedBox(
-//   constraints: BoxConstraints(
-//     minHeight: size.height,  // full height use gara
-//   ),
-//   child: Center(   // ← yo add gara IntrinsicHeight ko saato
-//     child: FadeTransition( 
                   opacity: _fadeIn,
                   child: SlideTransition(
                     position: _slideUp,
@@ -924,7 +916,6 @@ class _LoginPageState extends State<LoginPage>
                                         color: const Color(0xFF0D3B8E),
                                       ),
                                     ),
-                                   // const SizedBox(height: 4),
                                    const SizedBox(height: 2),
                                     Text(
                                       'Please sign in to continue',
@@ -935,7 +926,7 @@ class _LoginPageState extends State<LoginPage>
                                       ),
                                     ),
 
-                                   // SizedBox(height: isTV ? 32 : 26),
+                                   
                                    SizedBox(height: isTV ? 20 : 16),
 
                                     // Username field

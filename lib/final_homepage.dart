@@ -16,8 +16,6 @@ import 'youtube_page.dart';
 import 'html_broadcast_page.dart';
 
 
-
-
 class FinalHomePage extends StatefulWidget {
   final String userid;
   final String orgid;
@@ -313,8 +311,55 @@ void _handleBroadcastEvent(dynamic data) {
     print("🔄 App restarted via Pusher");
   }
 
-  void _performSearch() =>
-      setState(() => _searchCode = _searchController.text.trim());
+  // void _performSearch() =>
+  //     setState(() => _searchCode = _searchController.text.trim());
+
+
+  // English नम्बरलाई नेपालीमा बदल्नको लागि Helper Function
+  String _toNepaliNumber(String input) {
+    const englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const nepaliDigits = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
+    String output = input;
+    for (int i = 0; i < englishDigits.length; i++) {
+      output = output.replaceAll(englishDigits[i], nepaliDigits[i]);
+    }
+    return output;
+  }
+
+  void _performSearch() {
+    String typedCode = _searchController.text.trim();
+    
+    if (typedCode.isEmpty) {
+      setState(() => _searchCode = "");
+      return;
+    }
+
+    // टाइप गरेको कोड हाम्रो badapatradata मा छ कि छैन भनेर चेक गर्ने
+    bool codeExists = false;
+    String nepaliCode = _toNepaliNumber(typedCode);
+
+    for (var s in _badapatradata) {
+      String serviceCode = s['code'].toString().trim().replaceAll('.', '');
+      String searchCode = nepaliCode.replaceAll('.', '').trim();
+      String searchCodeEng = typedCode.replaceAll('.', '').trim();
+
+      if (serviceCode == searchCode || serviceCode == searchCodeEng) {
+        codeExists = true;
+        break;
+      }
+    }
+
+    if (codeExists) {
+      // यदि कोड सही छ भने मात्र Search गर्ने
+      setState(() => _searchCode = typedCode);
+    } else {
+      // यदि कोड गलत छ (सर्भिस छैन) भने: Search Bar Clear गर्ने र Scroll कन्टिन्यु गर्ने
+      _searchController.clear();
+      setState(() => _searchCode = "");
+      
+
+    }
+  }
 
   @override
   void dispose() {
@@ -362,9 +407,6 @@ return Scaffold(
 );
   }
 
-
-
-  
 
   Widget _buildMainContent() {
   final orientation = MediaQuery.of(context).orientation;

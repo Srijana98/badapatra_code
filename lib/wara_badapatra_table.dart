@@ -1,4 +1,4 @@
-import 'dart:async';
+
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
@@ -13,11 +13,10 @@ import 'package:flutter_html/flutter_html.dart';
 import 'main.dart';
 
 
-
 class DisplayHeading {
   final String display;
   final String width;
-
+  
   DisplayHeading({
     required this.display,
     required this.width,
@@ -146,6 +145,9 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
   bool _isSyncingScroll = false;
   bool _hasInitialized = false;
   double _savedScrollPosition = 0.0; 
+  
+  // code to handle the user interaction
+   bool _isUserInteracting = false;
 
   static final RegExp _htmlRegex = RegExp(r'<[^>]*>');
   static final RegExp _newlineRegex = RegExp(r'\n{3,}');
@@ -191,8 +193,7 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
     _isSyncingScroll = false;
   }
 
-  void _onBodyScroll() {
-    if (_isSyncingScroll) return;
+  void _onBodyScroll() {if (_isSyncingScroll) return;
     _isSyncingScroll = true;
     if (_headerController.hasClients) {
       _headerController.jumpTo(_bodyController.offset);
@@ -254,6 +255,23 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
     _runNativeScrollLoop();
   }
 
+  // code to handle the user interaction
+  void _pauseAutoScroll() {
+    if (!_isUserInteracting) {
+      _isUserInteracting = true;
+      _stopAutoScroll(); 
+    }
+  }
+
+  void _resumeAutoScroll() {
+    if (_isUserInteracting) {
+      _isUserInteracting = false;
+      if (_vController.hasClients) {
+        _startAutoScrollFromPosition(_vController.offset);
+      }
+    }
+  }
+
   Future<void> _startAutoScroll() async {
     _stopAutoScroll();
     _isAutoScrolling = true;
@@ -266,8 +284,14 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
     _runNativeScrollLoop();
   }
 
+
+
+
   Future<void> _runNativeScrollLoop() async {
     if (!mounted || !_vController.hasClients || !_isAutoScrolling) return;
+
+    // code to handle the user interaction
+        if (_isUserInteracting) return; 
 
     final double currentScroll = _vController.offset;
     final double maxScroll = _vController.position.maxScrollExtent;
@@ -280,25 +304,28 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
     }
 
     final double remainingDistance = maxScroll - currentScroll;
-    
-    // Calculate exactly how long it should take to reach the bottom at our desired speed
     final int durationMs = ((remainingDistance / _scrollPixelsPerSecond) * 1000).toInt();
 
     if (remainingDistance > 0) {
-      // Let Flutter's native engine handle the animation (Super Smooth)
-      await _vController.animateTo(
-        maxScroll,
-        duration: Duration(milliseconds: durationMs),
-        curve: Curves.linear, // Constant speed
-      );
+      try {
+        // 👉 Try-Catch थपिएको छ: Popup खोल्दा Animation kill भयो भने Error नआओस् 
+        await _vController.animateTo(
+          maxScroll,
+          duration: Duration(milliseconds: durationMs),
+          curve: Curves.linear,
+        );
+      } catch (e) {
+        // Animation interrupted by route push, ignore safely
+        debugPrint("Auto-scroll interrupted safely");
+      }
     }
 
     // Once it reaches the bottom, pause, reset to top, and loop
     if (_isAutoScrolling && mounted) {
-      await Future.delayed(const Duration(seconds: 2)); // Pause at bottom
+      await Future.delayed(const Duration(seconds: 2)); 
       if (mounted && _vController.hasClients) {
-        _vController.jumpTo(0); // Instantly jump to top
-        _runNativeScrollLoop(); // Start again
+        _vController.jumpTo(0); 
+        _runNativeScrollLoop(); 
       }
     }
   }
@@ -339,14 +366,25 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
             if (snapshot.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator());
             if (!snapshot.hasData || snapshot.data!.isEmpty) return const Center(child: Text('डेटा उपलब्ध छैन।', style: TextStyle(fontSize: 28)));
 
-            final filtered = widget.searchCode.isEmpty
-                ? snapshot.data!
-                : snapshot.data!.where((s) {
-                    String serviceCode = s.code.replaceAll('.', '').trim();
-                    String nepaliSearch = toNepaliNumber(widget.searchCode).replaceAll('.', '').trim();
-                    String engSearch = widget.searchCode.replaceAll('.', '').trim();
-                    return serviceCode == nepaliSearch || serviceCode == engSearch;
-                  }).toList();
+
+            bool isFallback = false;
+            List<Service> filtered = [];
+
+            if (widget.searchCode.isEmpty) {
+              filtered = snapshot.data!;
+            } else {
+              filtered = snapshot.data!.where((s) {
+                String serviceCode = s.code.replaceAll('.', '').trim();
+                String nepaliSearch = toNepaliNumber(widget.searchCode).replaceAll('.', '').trim();
+                String engSearch = widget.searchCode.replaceAll('.', '').trim();
+                return serviceCode == nepaliSearch || serviceCode == engSearch;
+              }).toList();
+
+              if (filtered.isEmpty) {
+                filtered = snapshot.data!;
+                isFallback = true; 
+              }
+            }
 
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (!mounted) return;
@@ -359,21 +397,41 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
                 _hasInitialized = true;
                 if (filtered.length > 2) _startAutoScroll();
               } else {
-                if (widget.searchCode.isNotEmpty) {
+                // ✅ यदि सही कोडभेटियो (fallback हैन) भने मात्र scroll रोक्ने
+                if (widget.searchCode.isNotEmpty && !isFallback) {
                   _stopAutoScroll();
-                } else if (widget.searchCode.isEmpty && !_isAutoScrolling) {
+                } 
+                // ✅ यदि सर्च खाली छ वा गलत कोड (fallback) छ भने scroll चालु राख्ने
+                else if (!_isAutoScrolling) {
                   if (filtered.length > 2) _startAutoScrollFromPosition(_savedScrollPosition);
                 }
               }
             });
 
+// code to handle the user interaction
+            // return Column(
+            //   children: [
+            //     Expanded(
+            //       child: Column(
+            //         children: [
+            //           // Header
+            //           Container(
+
             return Column(
               children: [
                 Expanded(
-                  child: Column(
-                    children: [
-                      // Header
-                      Container(
+                  // 👉 यहाँबाट Listener र MouseRegion थपिएको छ
+                  child: Listener(
+                    onPointerDown: (_) => _pauseAutoScroll(), 
+                    onPointerUp: (_) => _resumeAutoScroll(),  
+                    onPointerCancel: (_) => _resumeAutoScroll(),
+                    child: MouseRegion(
+                      onEnter: (_) => _pauseAutoScroll(), 
+                      onExit: (_) => _resumeAutoScroll(), 
+                      child: Column(
+                        children: [
+                          // Header
+                          Container(
                         height: isPortrait ? 65 : 55, 
                         color: const Color(0xFFC40000),
                         child: SingleChildScrollView(
@@ -463,6 +521,8 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
                     ],
                   ),
                 ),
+                  ),
+                ),
               ],
             );
           },
@@ -470,30 +530,6 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
       },
     );
   }
-
-  // Widget _cellWithBorder(String text, Color color, {bool bold = false}) {
-  //   final String cleanText = text
-  //       .replaceAll(_htmlRegex, '')
-  //       .replaceAll('&nbsp;', ' ')
-  //       .replaceAll('\r\n', '\n')
-  //       .replaceAll(_newlineRegex, '\n\n')
-  //       .trim();
-
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-  //     child: Text(
-  //       cleanText,
-  //       style: TextStyle(
-  //         color: color, 
-  //         fontSize: 13.8, 
-  //         height: 1.5, 
-  //         fontWeight: bold ? FontWeight.bold : FontWeight.w600
-  //       ),
-  //       softWrap: true,
-  //       overflow: TextOverflow.visible,
-  //     ),
-  //   );
-  // }
 
   Widget _cellWithBorder(String text, Color color, {bool bold = false}) {
     String cleanText;
@@ -526,5 +562,7 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
     );
   }
 }
+
+
 
 
