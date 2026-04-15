@@ -13,13 +13,15 @@ import 'package:flutter_html/flutter_html.dart';
 import 'main.dart';
 
 
+
 class DisplayHeading {
   final String display;
   final String width;
-  
+
   DisplayHeading({
     required this.display,
     required this.width,
+
 
  });
 
@@ -27,10 +29,12 @@ class DisplayHeading {
     return DisplayHeading(
       display: json['display']?.toString() ?? 'N',
       width: json['width']?.toString() ?? '10',
+     
     );
   }
 
   bool get isVisible => display.toUpperCase() == 'Y';
+  
 }
 
 class BadapatraDisplayHeading {
@@ -237,6 +241,7 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
     // Calling jumpTo on the current position cancels any running animateTo
     if (_vController.hasClients) {
       _vController.jumpTo(_vController.offset);
+      
     }
   }
 
@@ -244,9 +249,10 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
     _stopAutoScroll();
     _isAutoScrolling = true;
 
-    await Future.delayed(const Duration(milliseconds: 300));
+   // await Future.delayed(const Duration(milliseconds: 300));
     if (!mounted || !_vController.hasClients || !_isAutoScrolling) return;
 
+    
     final maxScroll = _vController.position.maxScrollExtent;
     final safePosition = fromPosition > maxScroll ? maxScroll : fromPosition;
     
@@ -276,7 +282,7 @@ class _WaraBadapatraTableState extends State<WaraBadapatraTable> {
     _stopAutoScroll();
     _isAutoScrolling = true;
 
-    await Future.delayed(const Duration(milliseconds: 100));
+   // await Future.delayed(const Duration(milliseconds: 100));
     if (!mounted || !_vController.hasClients || !_isAutoScrolling) return;
 
     if (_vController.hasClients) _vController.jumpTo(0);

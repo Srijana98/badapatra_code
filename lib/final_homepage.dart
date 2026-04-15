@@ -26,7 +26,6 @@ class FinalHomePage extends StatefulWidget {
   final List<dynamic> badapatradata;
   final Map<String, dynamic>? displayHeading;
   final List<dynamic> gallery; 
-  
 
 
   const FinalHomePage({
